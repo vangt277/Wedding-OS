@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="WeddingOS v9 — quản trị kế hoạch cưới, cảnh báo tự động, tài khoản mã hóa và đồng bộ Google Sheets." />
-  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbxCjvbrTWBYSgRjnATEDbCyCr81f2PlQjikNkKHVwsYZx127fsG5Y38BeLzDf-8eeyd/exec" />
+  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbwNIvUudAik0FlDXmUW80aNxF4TypBvmHwN57UQaCjfp9BQOnWYLZRvjONnWha-Az6hvQ/exec" />
   <title>WeddingOS v9.1.2 — Secure Notification Workspace</title>
 
   <script>
@@ -3924,22 +3924,43 @@ async function secureAccountRow(account,password){const encrypted=await encryptJ
 function showInlineError(id,message=''){const node=document.getElementById(id);if(!node)return;node.textContent=message;node.classList.toggle('hidden',!message);}
 function openSettingsAccessDialog(){AUTH.pendingTab='settings';const form=document.getElementById('settingsAccessForm');form?.reset();showInlineError('settingsAccessError','');const dialog=document.getElementById('settingsAccessDialog');if(!dialog.open)dialog.showModal();refreshIcons();setTimeout(()=>document.getElementById('settingsAccessPassword')?.focus(),50);}
 
+function adminRecoveryDeploymentError(error,status=null){
+  const code=String(error?.code||'');
+  const version=String(status?.bridgeVersion||AUTH.remoteStatus?.bridgeVersion||'không xác định');
+  if(code==='UNSUPPORTED_ACTION'||status?.adminRecoveryEnabled!==true){
+    return `Google Apps Script tại URL hiện tại đang chạy bản cũ (${version}) và chưa hỗ trợ khôi phục admin. Trong Apps Script, chọn Deploy → Manage deployments → Edit → Version: New version → Deploy. Nếu bạn tạo deployment mới, hãy cập nhật đúng URL /exec trong WeddingOS.`;
+  }
+  if(code==='EMAIL_SEND_FAILED'&&/permission|authorization|quyền|authorize/i.test(String(error?.message||''))){
+    return 'Apps Script chưa được cấp quyền gửi email. Hãy chạy hàm authorizeWeddingOSAdminRecovery() trong Apps Script, cấp quyền, rồi deploy lại New version.';
+  }
+  return error?.message||'Không thể gửi mã khôi phục.';
+}
+async function ensureAdminRecoveryBackend(){
+  const status=await getServerStatus();
+  if(!status||status.adminRecoveryEnabled!==true){
+    const error=remoteError(adminRecoveryDeploymentError({code:'UNSUPPORTED_ACTION'},status),'UNSUPPORTED_ACTION');
+    error.status=status;throw error;
+  }
+  return status;
+}
 async function sendAdminPasswordResetCode(reopen=false){
   const endpoint=configuredEndpoint();
   if(!endpoint){showInlineError('settingsAccessError','Chưa cấu hình Google Apps Script URL nên không thể gửi mã khôi phục.');return;}
   const buttonId=reopen?'resendAdminResetCode':'forgotAdminPassword';
   setButtonLoading(buttonId,true,'Đang gửi');
   showInlineError(reopen?'adminResetError':'settingsAccessError','');
+  let status=null;
   try{
+    status=await ensureAdminRecoveryBackend();
     const result=await postAppsScript({action:'requestAdminPasswordReset'},{authMode:'none',trackRevision:false});
     document.getElementById('adminPasswordResetForm').reset();
-    document.getElementById('adminResetDescription').textContent=`Mã gồm 8 chữ số đã được gửi đến ${result.emailMasked||'email khôi phục'}. Mã có hiệu lực trong ${Math.round(Number(result.expiresInSeconds||600)/60)} phút.`;
+    document.getElementById('adminResetDescription').textContent=`Mã gồm 8 chữ số đã được gửi đến ${result.emailMasked||status.adminRecoveryEmailMasked||'email khôi phục'}. Mã có hiệu lực trong ${Math.round(Number(result.expiresInSeconds||600)/60)} phút.`;
     if(!reopen)document.getElementById('settingsAccessDialog').close();
     const dialog=document.getElementById('adminPasswordResetDialog');if(!dialog.open)dialog.showModal();
     toast(reopen?'Đã gửi một mã khôi phục mới.':'Đã gửi mã khôi phục quản trị qua email.','success');
     refreshIcons();setTimeout(()=>document.getElementById('adminResetCode')?.focus(),50);
   }catch(error){
-    showInlineError(reopen?'adminResetError':'settingsAccessError',error.message||'Không thể gửi mã khôi phục.');
+    showInlineError(reopen?'adminResetError':'settingsAccessError',adminRecoveryDeploymentError(error,error.status||status));
   }finally{setButtonLoading(buttonId,false);}
 }
 function cancelAdminPasswordReset(){document.getElementById('adminPasswordResetDialog').close();openSettingsAccessDialog();}
@@ -3956,7 +3977,7 @@ async function submitAdminPasswordReset(event){event.preventDefault();const code
     secrets.remove(CONFIG.accountSessionKey);secrets.remove(CONFIG.accountProfileKey);secrets.remove(CONFIG.accountServerSessionKey);secrets.set(CONFIG.adminServerSessionKey,result.sessionToken);setSessionProfile(result.profile);setRemoteRevision(result.revision||0);
     await loadRemoteSnapshot(true,result.sessionToken);AUTH.accounts=[];document.getElementById('adminPasswordResetDialog').close();unlockAuthenticatedShell();completeNavigation(AUTH.pendingTab||'settings');AUTH.pendingTab=null;
     toast(`Đã đặt lại mật khẩu quản trị.${Number(result.accountsCleared||0)?` ${result.accountsCleared} tài khoản cũ đã được xóa và cần tạo lại.`:''}`,'success');
-  }catch(error){showInlineError('adminResetError',error.message||'Không thể đặt lại mật khẩu quản trị.');}
+  }catch(error){showInlineError('adminResetError',adminRecoveryDeploymentError(error));}
   finally{setButtonLoading('confirmAdminPasswordReset',false);}
 }
 
