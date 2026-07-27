@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="WeddingOS v9 — quản trị kế hoạch cưới, cảnh báo tự động, tài khoản mã hóa và đồng bộ Google Sheets." />
-  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbxCjvbrTWBYSgRjnATEDbCyCr81f2PlQjikNkKHVwsYZx127fsG5Y38BeLzDf-8eeyd/exec" />
-  <title>WeddingOS v9 — Secure Notification Workspace</title>
+  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbwNIvUudAik0FlDXmUW80aNxF4TypBvmHwN57UQaCjfp9BQOnWYLZRvjONnWha-Az6hvQ/exec" />
+  <title>WeddingOS v9.1.2 — Secure Notification Workspace</title>
 
   <script>
     (() => {
@@ -2519,7 +2519,8 @@
     }
     body.auth-locked #accountLoginDialog[open],
     body.auth-locked #settingsAccessDialog[open],
-    body.auth-locked #settingsPasswordDialog[open] { visibility: visible !important; pointer-events: auto !important; }
+    body.auth-locked #settingsPasswordDialog[open],
+    body.auth-locked #adminPasswordResetDialog[open] { visibility: visible !important; pointer-events: auto !important; }
     #accountLoginDialog::backdrop { background: rgba(2,6,23,.82); backdrop-filter: blur(12px); }
     .remember-login-row { display:flex; align-items:flex-start; gap:.65rem; cursor:pointer; border-radius:.75rem; padding:.6rem .7rem; }
     .remember-login-row:hover { background:#fff; }
@@ -3110,11 +3111,37 @@
           <h3 class="mt-1 text-xl font-bold">Nhập mật khẩu Thiết lập</h3>
           <p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Mật khẩu mặc định lần đầu là <strong>admin@123</strong>. Hệ thống sẽ yêu cầu đổi ngay sau khi xác thực.</p>
           <label class="mt-5 block"><span class="mb-2 block text-sm font-semibold">Mật khẩu quản trị</span><input id="settingsAccessPassword" type="password" autocomplete="current-password" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /></label>
+          <div class="mt-2 flex justify-end"><button id="forgotAdminPassword" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 hover:underline dark:text-brand-300"><i data-lucide="mail" class="size-3.5"></i>Quên mật khẩu?</button></div>
           <p id="settingsAccessError" class="mt-2 hidden text-xs font-semibold text-rose-600 dark:text-rose-300"></p>
         </div>
         <div class="flex justify-end gap-2 border-t border-slate-200 px-6 py-4 dark:border-slate-800">
           <button id="cancelSettingsAccess" type="button" class="h-10 rounded-xl border border-slate-200 px-4 text-sm font-semibold transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Hủy</button>
           <button type="submit" class="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-700 px-4 text-sm font-semibold text-white transition hover:bg-brand-800"><i data-lucide="unlock-keyhole" class="size-4"></i>Truy cập</button>
+        </div>
+      </form>
+    </dialog>
+
+
+    <!-- Admin password recovery -->
+    <dialog id="adminPasswordResetDialog" class="dialog-centered security-dialog-shell rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
+      <form id="adminPasswordResetForm">
+        <div class="px-6 py-6">
+          <div class="grid size-12 place-items-center rounded-2xl bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300"><i data-lucide="mail" class="size-6"></i></div>
+          <p class="mt-5 text-xs font-semibold uppercase tracking-[.16em] text-blue-700 dark:text-blue-300">Khôi phục quản trị</p>
+          <h3 class="mt-1 text-xl font-bold">Đặt lại mật khẩu admin</h3>
+          <p id="adminResetDescription" class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Mã gồm 8 chữ số sẽ được gửi đến email khôi phục đã cấu hình.</p>
+          <div class="mt-5 space-y-4">
+            <label class="block"><span class="mb-2 block text-sm font-semibold">Mã khôi phục</span><input id="adminResetCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{8}" required placeholder="8 chữ số" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm tracking-[.18em] outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /></label>
+            <label class="block"><span class="mb-2 block text-sm font-semibold">Mật khẩu admin mới</span><input id="adminResetNewPassword" type="password" autocomplete="new-password" minlength="6" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /></label>
+            <label class="block"><span class="mb-2 block text-sm font-semibold">Nhập lại mật khẩu mới</span><input id="adminResetConfirmPassword" type="password" autocomplete="new-password" minlength="6" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /></label>
+          </div>
+          <p id="adminResetError" class="mt-3 hidden text-xs font-semibold text-rose-600 dark:text-rose-300"></p>
+          <div class="mt-4 rounded-2xl bg-amber-50 p-4 text-xs leading-5 text-amber-800 dark:bg-amber-500/10 dark:text-amber-200"><strong>Lưu ý:</strong> việc đặt lại sẽ xóa các tài khoản người dùng cũ vì hồ sơ đang được mã hóa bằng mật khẩu admin trước đó. Dữ liệu kế hoạch cưới không bị xóa.</div>
+          <button id="resendAdminResetCode" type="button" class="mt-4 inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-semibold transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"><i data-lucide="send" class="size-3.5"></i>Gửi lại mã</button>
+        </div>
+        <div class="flex justify-end gap-2 border-t border-slate-200 px-6 py-4 dark:border-slate-800">
+          <button id="cancelAdminPasswordReset" type="button" class="h-10 rounded-xl border border-slate-200 px-4 text-sm font-semibold transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Quay lại</button>
+          <button id="confirmAdminPasswordReset" type="submit" class="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-700 px-4 text-sm font-semibold text-white transition hover:bg-brand-800"><i data-lucide="shield-check" class="size-4"></i>Đặt mật khẩu mới</button>
         </div>
       </form>
     </dialog>
@@ -3897,6 +3924,42 @@ async function secureAccountRow(account,password){const encrypted=await encryptJ
 function showInlineError(id,message=''){const node=document.getElementById(id);if(!node)return;node.textContent=message;node.classList.toggle('hidden',!message);}
 function openSettingsAccessDialog(){AUTH.pendingTab='settings';const form=document.getElementById('settingsAccessForm');form?.reset();showInlineError('settingsAccessError','');const dialog=document.getElementById('settingsAccessDialog');if(!dialog.open)dialog.showModal();refreshIcons();setTimeout(()=>document.getElementById('settingsAccessPassword')?.focus(),50);}
 
+async function sendAdminPasswordResetCode(reopen=false){
+  const endpoint=configuredEndpoint();
+  if(!endpoint){showInlineError('settingsAccessError','Chưa cấu hình Google Apps Script URL nên không thể gửi mã khôi phục.');return;}
+  const buttonId=reopen?'resendAdminResetCode':'forgotAdminPassword';
+  setButtonLoading(buttonId,true,'Đang gửi');
+  showInlineError(reopen?'adminResetError':'settingsAccessError','');
+  try{
+    const result=await postAppsScript({action:'requestAdminPasswordReset'},{authMode:'none',trackRevision:false});
+    document.getElementById('adminPasswordResetForm').reset();
+    document.getElementById('adminResetDescription').textContent=`Mã gồm 8 chữ số đã được gửi đến ${result.emailMasked||'email khôi phục'}. Mã có hiệu lực trong ${Math.round(Number(result.expiresInSeconds||600)/60)} phút.`;
+    if(!reopen)document.getElementById('settingsAccessDialog').close();
+    const dialog=document.getElementById('adminPasswordResetDialog');if(!dialog.open)dialog.showModal();
+    toast(reopen?'Đã gửi một mã khôi phục mới.':'Đã gửi mã khôi phục quản trị qua email.','success');
+    refreshIcons();setTimeout(()=>document.getElementById('adminResetCode')?.focus(),50);
+  }catch(error){
+    showInlineError(reopen?'adminResetError':'settingsAccessError',error.message||'Không thể gửi mã khôi phục.');
+  }finally{setButtonLoading(buttonId,false);}
+}
+function cancelAdminPasswordReset(){document.getElementById('adminPasswordResetDialog').close();openSettingsAccessDialog();}
+async function submitAdminPasswordReset(event){event.preventDefault();const code=document.getElementById('adminResetCode').value.replace(/\D/g,''),newPassword=document.getElementById('adminResetNewPassword').value,confirmPassword=document.getElementById('adminResetConfirmPassword').value;showInlineError('adminResetError','');
+  if(code.length!==8){showInlineError('adminResetError','Mã khôi phục phải gồm đúng 8 chữ số.');return;}
+  if(newPassword.length<SECURITY_POLICY.minPasswordLength){showInlineError('adminResetError',`Mật khẩu mới phải có ít nhất ${SECURITY_POLICY.minPasswordLength} ký tự.`);return;}
+  if(newPassword===SECURITY_POLICY.defaultPassword){showInlineError('adminResetError','Không được sử dụng lại mật khẩu mặc định.');return;}
+  if(newPassword!==confirmPassword){showInlineError('adminResetError','Hai lần nhập mật khẩu mới chưa khớp.');return;}
+  setButtonLoading('confirmAdminPasswordReset',true,'Đang đặt lại');
+  try{
+    const securityRecord=await createSecurityAccessRecord(newPassword),result=await postAppsScript({action:'confirmAdminPasswordReset',resetCode:code,securityRecord},{authMode:'none'});
+    clearRememberedLogin();UI.pendingChanges=UI.pendingChanges.filter(change=>!['accounts','security'].includes(change.collection));savePendingChanges();
+    AUTH.currentUserId='';AUTH.currentProfile=null;AUTH.accounts=[];AUTH.adminAuthenticated=true;AUTH.settingsUnlocked=true;AUTH.masterPassword=newPassword;AUTH.adminBypass=false;
+    secrets.remove(CONFIG.accountSessionKey);secrets.remove(CONFIG.accountProfileKey);secrets.remove(CONFIG.accountServerSessionKey);secrets.set(CONFIG.adminServerSessionKey,result.sessionToken);setSessionProfile(result.profile);setRemoteRevision(result.revision||0);
+    await loadRemoteSnapshot(true,result.sessionToken);AUTH.accounts=[];document.getElementById('adminPasswordResetDialog').close();unlockAuthenticatedShell();completeNavigation(AUTH.pendingTab||'settings');AUTH.pendingTab=null;
+    toast(`Đã đặt lại mật khẩu quản trị.${Number(result.accountsCleared||0)?` ${result.accountsCleared} tài khoản cũ đã được xóa và cần tạo lại.`:''}`,'success');
+  }catch(error){showInlineError('adminResetError',error.message||'Không thể đặt lại mật khẩu quản trị.');}
+  finally{setButtonLoading('confirmAdminPasswordReset',false);}
+}
+
 function remoteRevision(){return Math.max(0,Number(storage.get(CONFIG.remoteRevisionKey,'0')||0));}
 function setRemoteRevision(value){const revision=Math.max(0,Number(value||0));storage.set(CONFIG.remoteRevisionKey,String(revision));return revision;}
 function serverAccountToken(){return secrets.get(CONFIG.accountServerSessionKey,'');}
@@ -3905,7 +3968,7 @@ function activeServerToken(admin=false){return admin?serverAdminToken():(serverA
 function proofForVerifier(verifier,nonce,subject){return sha256Base64(`${verifier}.${nonce}.${subject}`);}
 function remoteError(message,code='REMOTE_ERROR'){const error=new Error(message);error.code=code;return error;}
 async function getServerStatus(){const endpoint=configuredEndpoint();if(!endpoint)return null;const result=await postAppsScript({action:'getStatus'},{authMode:'none',trackRevision:false});AUTH.remoteStatus=result;AUTH.serverRequiresLogin=Boolean(result.requiresAccountLogin);storage.set(CONFIG.remoteStatusKey,JSON.stringify({checkedAt:new Date().toISOString(),...result}));return result;}
-async function loadRemoteSnapshot(admin=false){const result=await postAppsScript({action:'load'},{admin});const remote=validateRemoteData(result.data||{});if(admin){DATA=migrateData(remote);}else{DATA=migrateData({...remote,accounts:[],security:[]});}if(result.profile)setSessionProfile({...result.profile,id:result.profile.id||AUTH.currentUserId});setRemoteRevision(result.revision||0);saveData();applyCurrentPreferences();renderNavigation();renderHeader();renderPage();return result;}
+async function loadRemoteSnapshot(admin=false,explicitToken=''){const result=await postAppsScript({action:'load',...(explicitToken?{sessionToken:explicitToken}:{})},{admin,authMode:explicitToken?'none':'auto'});const remote=validateRemoteData(result.data||{});if(admin){DATA=migrateData(remote);}else{DATA=migrateData({...remote,accounts:[],security:[]});}if(result.profile)setSessionProfile({...result.profile,id:result.profile.id||AUTH.currentUserId});setRemoteRevision(result.revision||0);saveData();applyCurrentPreferences();renderNavigation();renderHeader();renderPage();return result;}
 async function logoutServerToken(token){if(!token||!configuredEndpoint())return;try{await postAppsScript({action:'logout',sessionToken:token},{authMode:'none'});}catch(_){} }
 async function submitSettingsAccess(event){event.preventDefault();const password=document.getElementById('settingsAccessPassword').value;showInlineError('settingsAccessError','');try{
   const endpoint=configuredEndpoint(),accountProfileBefore=AUTH.currentUserId?currentUserProfile():null;
@@ -4305,7 +4368,7 @@ function buildFullSyncChanges(){
 async function postAppsScript(payload,options={}){
   const endpoint=normalizeAppsScriptEndpoint(configuredEndpoint()),password=connectionSecrets.get(CONFIG.passwordKey,''),schemaPassword=connectionSecrets.get(CONFIG.schemaPasswordKey,''),admin=Boolean(options.admin||AUTH.settingsUnlocked),authMode=options.authMode||'auto';
   const token=authMode==='none'?'':activeServerToken(admin);
-  const body={...payload,source:'WeddingOS',clientVersion:'9',sentAt:new Date().toISOString(),requestId:payload.requestId||uid('request'),...(token?{sessionToken:token}:{}),...(password?{password}:{}),...(schemaPassword?{schemaPassword}:{})};
+  const body={...payload,source:'WeddingOS',clientVersion:'9.1.2',sentAt:new Date().toISOString(),requestId:payload.requestId||uid('request'),...(token?{sessionToken:token}:{}),...(password?{password}:{}),...(schemaPassword?{schemaPassword}:{})};
   const response=await fetchWithTimeout(endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
   if(!response.ok)throw remoteError(`HTTP ${response.status}`,'HTTP_ERROR');
   const result=await readJsonResponse(response);if(result.success===false)throw remoteError(result.message||'Google Sheets từ chối dữ liệu',result.code||'REMOTE_ERROR');if(options.trackRevision!==false&&result.revision!==undefined)setRemoteRevision(result.revision);return result;
@@ -4344,9 +4407,9 @@ function resetData(){if(!confirm('Khôi phục toàn bộ dữ liệu mặc đ�
 function toast(message,type='info'){const tones={success:['circle-check-big','border-emerald-200 bg-white text-slate-900 dark:border-emerald-900 dark:bg-slate-900 dark:text-white','bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'],info:['info','border-blue-200 bg-white text-slate-900 dark:border-blue-900 dark:bg-slate-900 dark:text-white','bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300'],error:['circle-alert','border-rose-200 bg-white text-slate-900 dark:border-rose-900 dark:bg-slate-900 dark:text-white','bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300']};const [toastIcon,wrapper,iconClass]=tones[type]||tones.info,id=uid('toast'),node=document.createElement('div');node.id=id;node.className=`pointer-events-auto flex items-start gap-3 rounded-2xl border p-4 shadow-panel animate-slide-in ${wrapper}`;node.innerHTML=`<span class="grid size-9 shrink-0 place-items-center rounded-xl ${iconClass}">${icon(toastIcon,'size-4')}</span><div class="min-w-0 flex-1"><p class="text-sm font-semibold">${esc(message)}</p></div><button type="button" aria-label="Đóng thông báo" class="grid size-7 place-items-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-white">${icon('x','size-3.5')}</button>`;node.querySelector('button').addEventListener('click',()=>node.remove());document.getElementById('toastRegion').appendChild(node);refreshIcons();setTimeout(()=>node.remove(),5200);}
 
 function bindGlobalEvents(){
-  document.getElementById('openSidebar').addEventListener('click',openSidebar);document.getElementById('closeSidebar').addEventListener('click',closeSidebar);document.getElementById('sidebarOverlay').addEventListener('click',closeSidebar);document.getElementById('profileButton').addEventListener('click',openProfileDialog);document.getElementById('notificationButton').addEventListener('click',openNotificationCenter);document.getElementById('settingsAccessForm').addEventListener('submit',submitSettingsAccess);document.getElementById('cancelSettingsAccess').addEventListener('click',cancelSettingsAccess);document.getElementById('settingsPasswordForm').addEventListener('submit',submitSettingsPassword);document.getElementById('cancelSettingsPassword').addEventListener('click',cancelSettingsPassword);document.getElementById('accountForm').addEventListener('submit',saveAccount);document.getElementById('accountPasswordForm').addEventListener('submit',saveAccountPassword);document.getElementById('accountLoginForm').addEventListener('submit',submitAccountLogin);document.getElementById('selfPasswordForm').addEventListener('submit',submitSelfPassword);document.getElementById('columnSettingsForm').addEventListener('submit',saveColumnSettings);document.getElementById('resetColumnSettingsButton').addEventListener('click',resetColumnSettings);document.getElementById('dashboardTextForm').addEventListener('submit',saveDashboardText);document.getElementById('adminAccessFromLogin').addEventListener('click',openAdminFromLogin);document.getElementById('editButton')?.addEventListener('click',toggleEditMode);document.getElementById('saveButton')?.addEventListener('click',savePreview);document.getElementById('syncButton').addEventListener('click',syncPreview);document.getElementById('editorForm').addEventListener('submit',saveEditor);document.getElementById('confirmDeleteButton').addEventListener('click',confirmDelete);document.getElementById('connectionForm').addEventListener('submit',saveConnectionSettings);document.getElementById('toggleConnectionPassword').addEventListener('click',toggleConnectionPassword);document.getElementById('copyConnectionLink').addEventListener('click',copyConnectionLink);document.getElementById('filterForm').addEventListener('submit',applyFilterDialog);document.getElementById('resetFilterDraftButton').addEventListener('click',resetFilterDraft);
+  document.getElementById('openSidebar').addEventListener('click',openSidebar);document.getElementById('closeSidebar').addEventListener('click',closeSidebar);document.getElementById('sidebarOverlay').addEventListener('click',closeSidebar);document.getElementById('profileButton').addEventListener('click',openProfileDialog);document.getElementById('notificationButton').addEventListener('click',openNotificationCenter);document.getElementById('settingsAccessForm').addEventListener('submit',submitSettingsAccess);document.getElementById('cancelSettingsAccess').addEventListener('click',cancelSettingsAccess);document.getElementById('forgotAdminPassword').addEventListener('click',()=>sendAdminPasswordResetCode(false));document.getElementById('adminPasswordResetForm').addEventListener('submit',submitAdminPasswordReset);document.getElementById('cancelAdminPasswordReset').addEventListener('click',cancelAdminPasswordReset);document.getElementById('resendAdminResetCode').addEventListener('click',()=>sendAdminPasswordResetCode(true));document.getElementById('settingsPasswordForm').addEventListener('submit',submitSettingsPassword);document.getElementById('cancelSettingsPassword').addEventListener('click',cancelSettingsPassword);document.getElementById('accountForm').addEventListener('submit',saveAccount);document.getElementById('accountPasswordForm').addEventListener('submit',saveAccountPassword);document.getElementById('accountLoginForm').addEventListener('submit',submitAccountLogin);document.getElementById('selfPasswordForm').addEventListener('submit',submitSelfPassword);document.getElementById('columnSettingsForm').addEventListener('submit',saveColumnSettings);document.getElementById('resetColumnSettingsButton').addEventListener('click',resetColumnSettings);document.getElementById('dashboardTextForm').addEventListener('submit',saveDashboardText);document.getElementById('adminAccessFromLogin').addEventListener('click',openAdminFromLogin);document.getElementById('editButton')?.addEventListener('click',toggleEditMode);document.getElementById('saveButton')?.addEventListener('click',savePreview);document.getElementById('syncButton').addEventListener('click',syncPreview);document.getElementById('editorForm').addEventListener('submit',saveEditor);document.getElementById('confirmDeleteButton').addEventListener('click',confirmDelete);document.getElementById('connectionForm').addEventListener('submit',saveConnectionSettings);document.getElementById('toggleConnectionPassword').addEventListener('click',toggleConnectionPassword);document.getElementById('copyConnectionLink').addEventListener('click',copyConnectionLink);document.getElementById('filterForm').addEventListener('submit',applyFilterDialog);document.getElementById('resetFilterDraftButton').addEventListener('click',resetFilterDraft);
   document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>document.getElementById(button.dataset.closeDialog).close()));
-  ['accountLoginDialog','settingsPasswordDialog'].forEach(id=>document.getElementById(id)?.addEventListener('cancel',event=>{if(id==='accountLoginDialog'||AUTH.passwordChangeForced)event.preventDefault();}));
+  ['accountLoginDialog','settingsPasswordDialog','adminPasswordResetDialog'].forEach(id=>document.getElementById(id)?.addEventListener('cancel',event=>{if(id==='accountLoginDialog'||id==='adminPasswordResetDialog'||AUTH.passwordChangeForced)event.preventDefault();}));
   document.querySelectorAll('[data-mobile-action]').forEach(button=>button.addEventListener('click',()=>{toggleMobileActions();({edit:toggleEditMode,save:savePreview,sync:syncPreview})[button.dataset.mobileAction]?.();}));
   document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeSidebar();if(UI.mobileActionsOpen)toggleMobileActions();}if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();savePreview();}});
   window.addEventListener('resize',()=>{if(window.innerWidth>=1024){document.getElementById('sidebarOverlay').classList.add('hidden');document.body.classList.remove('overflow-hidden');}});
