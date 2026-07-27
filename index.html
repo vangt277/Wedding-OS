@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="WeddingOS v9 — quản trị kế hoạch cưới, cảnh báo tự động, tài khoản mã hóa và đồng bộ Google Sheets." />
-  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbxCjvbrTWBYSgRjnATEDbCyCr81f2PlQjikNkKHVwsYZx127fsG5Y38BeLzDf-8eeyd/exec" />
+  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbwNIvUudAik0FlDXmUW80aNxF4TypBvmHwN57UQaCjfp9BQOnWYLZRvjONnWha-Az6hvQ/exec" />
   <title>WeddingOS v9.1.2 — Secure Notification Workspace</title>
 
   <script>
@@ -3111,6 +3111,7 @@
           <h3 class="mt-1 text-xl font-bold">Nhập mật khẩu Thiết lập</h3>
           <p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Mật khẩu mặc định lần đầu là <strong>admin@123</strong>. Hệ thống sẽ yêu cầu đổi ngay sau khi xác thực.</p>
           <label class="mt-5 block"><span class="mb-2 block text-sm font-semibold">Mật khẩu quản trị</span><input id="settingsAccessPassword" type="password" autocomplete="current-password" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /></label>
+          <label class="mt-4 block"><span class="mb-2 block text-sm font-semibold">Mật khẩu kết nối Google Sheets <span class="font-normal text-slate-400">(nếu đã bật)</span></span><input id="settingsConnectionPassword" type="password" autocomplete="off" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /><span class="mt-2 block text-xs leading-5 text-slate-500 dark:text-slate-400">Đây là mật khẩu đã đặt bằng <code>setWeddingOSPassword(...)</code>, khác với mật khẩu admin.</span></label>
           <div class="mt-2 flex justify-end"><button id="forgotAdminPassword" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 hover:underline dark:text-brand-300"><i data-lucide="mail" class="size-3.5"></i>Quên mật khẩu?</button></div>
           <p id="settingsAccessError" class="mt-2 hidden text-xs font-semibold text-rose-600 dark:text-rose-300"></p>
         </div>
@@ -3922,7 +3923,7 @@ async function createSecurityAccessRecord(password){const salt=crypto.getRandomV
 async function loadAccountCache(password){const decoded=[];let metadataChanged=false;for(const row of(DATA.accounts||[])){try{const profile=await decryptJson(row,password),account={...profile,id:row.id,status:row.status||profile.status||'active',usernameHash:row.usernameHash,passwordHash:row.passwordHash,passwordSalt:row.passwordSalt,createdAt:profile.createdAt||row.updatedAt,updatedAt:row.updatedAt};decoded.push(account);if(row.displayName!==profile.displayName||row.userCode!==profile.userCode||row.usernameLabel!==profile.username){row.displayName=profile.displayName;row.userCode=profile.userCode;row.usernameLabel=profile.username;row.updatedAt=new Date().toISOString();queueUpsert('accounts',row);metadataChanged=true;}}catch(error){console.warn('Không giải mã được tài khoản',row.id,error);throw new Error('Không thể giải mã hồ sơ tài khoản bằng mật khẩu quản trị hiện tại.');}}AUTH.accounts=decoded;if(metadataChanged)saveData();return decoded;}
 async function secureAccountRow(account,password){const encrypted=await encryptJson({userCode:account.userCode,displayName:account.displayName,username:account.username,createdAt:account.createdAt||new Date().toISOString()},password);return{id:account.id,userCode:account.userCode,displayName:account.displayName,usernameLabel:account.username,usernameHash:account.usernameHash,passwordHash:account.passwordHash,passwordSalt:account.passwordSalt,passwordIterations:Number(account.passwordIterations||SECURITY_POLICY.passwordIterations),passwordAlgorithm:account.passwordAlgorithm||'PBKDF2-SHA256-256',status:account.status||'active',...encrypted,updatedAt:new Date().toISOString()};}
 function showInlineError(id,message=''){const node=document.getElementById(id);if(!node)return;node.textContent=message;node.classList.toggle('hidden',!message);}
-function openSettingsAccessDialog(){AUTH.pendingTab='settings';const form=document.getElementById('settingsAccessForm');form?.reset();showInlineError('settingsAccessError','');const dialog=document.getElementById('settingsAccessDialog');if(!dialog.open)dialog.showModal();refreshIcons();setTimeout(()=>document.getElementById('settingsAccessPassword')?.focus(),50);}
+function openSettingsAccessDialog(){AUTH.pendingTab='settings';const form=document.getElementById('settingsAccessForm');form?.reset();const connectionInput=document.getElementById('settingsConnectionPassword');if(connectionInput)connectionInput.value=connectionSecrets.get(CONFIG.passwordKey,'');showInlineError('settingsAccessError','');const dialog=document.getElementById('settingsAccessDialog');if(!dialog.open)dialog.showModal();refreshIcons();setTimeout(()=>document.getElementById('settingsAccessPassword')?.focus(),50);}
 
 function adminRecoveryDeploymentError(error,status=null){
   const code=String(error?.code||'');
@@ -3991,14 +3992,16 @@ function remoteError(message,code='REMOTE_ERROR'){const error=new Error(message)
 async function getServerStatus(){const endpoint=configuredEndpoint();if(!endpoint)return null;const result=await postAppsScript({action:'getStatus'},{authMode:'none',trackRevision:false});AUTH.remoteStatus=result;AUTH.serverRequiresLogin=Boolean(result.requiresAccountLogin);storage.set(CONFIG.remoteStatusKey,JSON.stringify({checkedAt:new Date().toISOString(),...result}));return result;}
 async function loadRemoteSnapshot(admin=false,explicitToken=''){const result=await postAppsScript({action:'load',...(explicitToken?{sessionToken:explicitToken}:{})},{admin,authMode:explicitToken?'none':'auto'});const remote=validateRemoteData(result.data||{});if(admin){DATA=migrateData(remote);}else{DATA=migrateData({...remote,accounts:[],security:[]});}if(result.profile)setSessionProfile({...result.profile,id:result.profile.id||AUTH.currentUserId});setRemoteRevision(result.revision||0);saveData();applyCurrentPreferences();renderNavigation();renderHeader();renderPage();return result;}
 async function logoutServerToken(token){if(!token||!configuredEndpoint())return;try{await postAppsScript({action:'logout',sessionToken:token},{authMode:'none'});}catch(_){} }
-async function submitSettingsAccess(event){event.preventDefault();const password=document.getElementById('settingsAccessPassword').value;showInlineError('settingsAccessError','');try{
+async function submitSettingsAccess(event){event.preventDefault();const password=document.getElementById('settingsAccessPassword').value,connectionPassword=String(document.getElementById('settingsConnectionPassword')?.value||'');showInlineError('settingsAccessError','');try{
   const endpoint=configuredEndpoint(),accountProfileBefore=AUTH.currentUserId?currentUserProfile():null;
   if(endpoint){
     try{
-      const challenge=await postAppsScript({action:'adminChallenge'},{authMode:'none'}),verifier=await passwordVerifier(password,challenge.passwordSalt,challenge.passwordIterations),proof=await proofForVerifier(verifier,challenge.nonce,'admin');
-      const login=await postAppsScript({action:'adminLogin',nonce:challenge.nonce,proof},{authMode:'none'});secrets.set(CONFIG.adminServerSessionKey,login.sessionToken);setRemoteRevision(login.revision||remoteRevision());
+      const challenge=await postAppsScript({action:'adminChallenge',...(connectionPassword?{password:connectionPassword}:{})},{authMode:'none'}),verifier=await passwordVerifier(password,challenge.passwordSalt,challenge.passwordIterations),proof=await proofForVerifier(verifier,challenge.nonce,'admin');
+      if(connectionPassword)connectionSecrets.set(CONFIG.passwordKey,connectionPassword);
+      const login=await postAppsScript({action:'adminLogin',nonce:challenge.nonce,proof,...(connectionPassword?{password:connectionPassword}:{})},{authMode:'none'});secrets.set(CONFIG.adminServerSessionKey,login.sessionToken);setRemoteRevision(login.revision||remoteRevision());
       await loadRemoteSnapshot(true);if(accountProfileBefore)setSessionProfile(accountProfileBefore);
     }catch(error){
+      if(error.code==='INVALID_CONNECTION_PASSWORD'){showInlineError('settingsAccessError','Mật khẩu kết nối Google Sheets không đúng. Đây là mật khẩu đã đặt bằng setWeddingOSPassword(...), không phải mật khẩu admin. Nếu đã quên, chạy disableWeddingOSConnectionPasswordForBootstrap() trong Apps Script rồi thử lại.');return;}
       if(error.code!=='ADMIN_NOT_INITIALIZED')throw error;
       if(!await verifySettingsPassword(password)){showInlineError('settingsAccessError','Mật khẩu quản trị không đúng.');return;}
     }
@@ -4388,8 +4391,8 @@ function buildFullSyncChanges(){
 }
 async function postAppsScript(payload,options={}){
   const endpoint=normalizeAppsScriptEndpoint(configuredEndpoint()),password=connectionSecrets.get(CONFIG.passwordKey,''),schemaPassword=connectionSecrets.get(CONFIG.schemaPasswordKey,''),admin=Boolean(options.admin||AUTH.settingsUnlocked),authMode=options.authMode||'auto';
-  const token=authMode==='none'?'':activeServerToken(admin);
-  const body={...payload,source:'WeddingOS',clientVersion:'9.1.2',sentAt:new Date().toISOString(),requestId:payload.requestId||uid('request'),...(token?{sessionToken:token}:{}),...(password?{password}:{}),...(schemaPassword?{schemaPassword}:{})};
+  const token=authMode==='none'?'':activeServerToken(admin),hasPayloadPassword=Object.prototype.hasOwnProperty.call(payload,'password'),hasPayloadSchemaPassword=Object.prototype.hasOwnProperty.call(payload,'schemaPassword');
+  const body={...payload,source:'WeddingOS',clientVersion:'9.1.4',sentAt:new Date().toISOString(),requestId:payload.requestId||uid('request'),...(token?{sessionToken:token}:{}),...(!hasPayloadPassword&&password?{password}:{}),...(!hasPayloadSchemaPassword&&schemaPassword?{schemaPassword}:{})};
   const response=await fetchWithTimeout(endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
   if(!response.ok)throw remoteError(`HTTP ${response.status}`,'HTTP_ERROR');
   const result=await readJsonResponse(response);if(result.success===false)throw remoteError(result.message||'Google Sheets từ chối dữ liệu',result.code||'REMOTE_ERROR');if(options.trackRevision!==false&&result.revision!==undefined)setRemoteRevision(result.revision);return result;
