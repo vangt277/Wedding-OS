@@ -1,41 +1,27 @@
-name: Deploy static site to Netlify
+- name: Check Netlify secrets
+  run: |
+    if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
+      echo "NETLIFY_AUTH_TOKEN is missing"
+      exit 1
+    fi
 
-on:
-  push:
-    branches:
-      - main
+    if [ -z "$NETLIFY_SITE_ID" ]; then
+      echo "NETLIFY_SITE_ID is missing"
+      exit 1
+    fi
 
-  workflow_dispatch:
+    echo "Netlify secrets are available"
+  env:
+    NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+    NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-permissions:
-  contents: read
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v7
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          package-manager-cache: false
-
-      - name: Check website files
-        run: |
-          echo "Files in repository:"
-          ls -la
-
-          if [ ! -f index.html ]; then
-            echo "Error: index.html not found"
-            exit 1
-          fi
-
-      - name: Deploy to Netlify
-        run: npx --yes netlify-cli deploy --dir=. --prod
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+- name: Deploy to Netlify
+  run: |
+    npx --yes netlify-cli@latest deploy \
+      --dir="." \
+      --site="$NETLIFY_SITE_ID" \
+      --auth="$NETLIFY_AUTH_TOKEN" \
+      --prod
+  env:
+    NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+    NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
