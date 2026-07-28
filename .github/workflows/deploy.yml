@@ -1,41 +1,25 @@
-name: Build and Deploy to Netlify
+name: Deploy Static Site to Netlify
 
 on:
   push:
     branches:
-      - main # Đổi thành master nếu repo bạn dùng nhánh master
+      - main # Đổi thành master nếu dùng master
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Lấy code từ GitHub về runner
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Cài đặt môi trường Node.js (Đã bỏ dòng cache gây lỗi)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      # 3. Cài đặt dependencies (Dùng npm install thay vì npm ci)
-      - name: Install dependencies
-        run: npm install
-
-      # 4. Chạy lệnh Build
-      - name: Build project
-        run: npm run build
-
-      # 5. Đẩy thư mục đã build lên Netlify
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         with:
-          publish-dir: './dist' # Đổi thành './build' nếu bạn dùng Create React App
+          publish-dir: '.' # Đẩy toàn bộ file ở thư mục gốc lên thẳng Netlify
           production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
+          deploy-message: "Deploy Static Site from GitHub Actions"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
