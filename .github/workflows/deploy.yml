@@ -3,20 +3,22 @@ name: Deploy Static Site to Netlify
 on:
   push:
     branches:
-      - main # Đổi thành master nếu dùng master
+      - main # Đổi thành master nếu tên nhánh của bạn là master
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Lấy code từ GitHub về runner
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Đẩy thẳng toàn bộ file HTML/JS/CSS lên Netlify
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         with:
-          publish-dir: '.' # Đẩy toàn bộ file ở thư mục gốc lên thẳng Netlify
+          publish-dir: '.' # Đẩy thư mục gốc chứa các file html/css/js
           production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy Static Site from GitHub Actions"
