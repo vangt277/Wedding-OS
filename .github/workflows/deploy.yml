@@ -1,27 +1,41 @@
-name: Deploy Static Site to Netlify
+name: Deploy static site to Netlify
 
 on:
   push:
     branches:
-      - main # Đổi thành master nếu tên nhánh của bạn là master
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Lấy code từ GitHub về runner
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v7
 
-      # 2. Đẩy thẳng toàn bộ file HTML/JS/CSS lên Netlify
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
-          publish-dir: '.' # Đẩy thư mục gốc chứa các file html/css/js
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy Static Site from GitHub Actions"
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Check website files
+        run: |
+          echo "Files in repository:"
+          ls -la
+
+          if [ ! -f index.html ]; then
+            echo "Error: index.html not found"
+            exit 1
+          fi
+
+      - name: Deploy to Netlify
+        run: npx --yes netlify-cli deploy --dir=. --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
