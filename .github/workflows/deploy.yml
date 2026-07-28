@@ -1,27 +1,49 @@
-- name: Check Netlify secrets
-  run: |
-    if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
-      echo "NETLIFY_AUTH_TOKEN is missing"
-      exit 1
-    fi
+name: Deploy static site to Netlify
 
-    if [ -z "$NETLIFY_SITE_ID" ]; then
-      echo "NETLIFY_SITE_ID is missing"
-      exit 1
-    fi
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-    echo "Netlify secrets are available"
-  env:
-    NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-    NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-- name: Deploy to Netlify
-  run: |
-    npx --yes netlify-cli@latest deploy \
-      --dir="." \
-      --site="$NETLIFY_SITE_ID" \
-      --auth="$NETLIFY_AUTH_TOKEN" \
-      --prod
-  env:
-    NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-    NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify website files
+        run: |
+          echo "Checking website files..."
+          ls -la
+          test -f index.html
+          test -f style.css
+          test -f script.js
+
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
+            echo "Missing NETLIFY_AUTH_TOKEN"
+            exit 1
+          fi
+
+          if [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "Missing NETLIFY_SITE_ID"
+            exit 1
+          fi
+
+          npx --yes netlify-cli@latest deploy \
+            --dir=. \
+            --site="$NETLIFY_SITE_ID" \
+            --auth="$NETLIFY_AUTH_TOKEN" \
+            --prod
