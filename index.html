@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="WeddingOS v9 — quản trị kế hoạch cưới, cảnh báo tự động, tài khoản mã hóa và đồng bộ Google Sheets." />
-  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbxCjvbrTWBYSgRjnATEDbCyCr81f2PlQjikNkKHVwsYZx127fsG5Y38BeLzDf-8eeyd/exec" />
-  <title>WeddingOS v9.1.2 — Secure Notification Workspace</title>
+  <meta name="wedding-sync-endpoint" content="https://script.google.com/macros/s/AKfycbwNIvUudAik0FlDXmUW80aNxF4TypBvmHwN57UQaCjfp9BQOnWYLZRvjONnWha-Az6hvQ/exec" />
+  <title>WeddingOS v9.1.5 — Reliable Google Sheets Sync</title>
 
   <script>
     (() => {
@@ -3336,6 +3336,16 @@ const CONFIG = {
   rememberLoginKey: 'wedding-os-remember-login-v1',
   rememberedAuthKey: 'wedding-os-remembered-auth-v1',
 
+  networkTimeouts: Object.freeze({
+    default: 90000,
+    status: 45000,
+    auth: 60000,
+    load: 180000,
+    schema: 240000,
+    delta: 240000,
+    full: 330000
+  }),
+
   pageSize: 20,
   lookupPageSize: 5,
   nav: [
@@ -3781,10 +3791,14 @@ function configuredEndpoint(){
   try{return normalizeAppsScriptEndpoint(value);}catch(_){return '';}
 }
 function needsInitialFullSync(endpoint=configuredEndpoint()){ return Boolean(endpoint)&&storage.get(CONFIG.fullSyncEndpointKey,'')!==endpoint; }
-async function fetchWithTimeout(url,options={},timeoutMs=25000){
+async function fetchWithTimeout(url,options={},timeoutMs=CONFIG.networkTimeouts.default){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{return await fetch(url,{...options,signal:controller.signal});}
-  catch(error){if(error?.name==='AbortError')throw new Error('Yêu cầu quá thời gian chờ.');throw error;}
+  catch(error){
+    if(error?.name==='AbortError')throw remoteError(`Máy chủ Google Sheets chưa phản hồi sau ${Math.ceil(timeoutMs/1000)} giây. Yêu cầu có thể vẫn đang được xử lý trên máy chủ.`, 'REQUEST_TIMEOUT');
+    if(error instanceof TypeError)throw remoteError('Không thể kết nối tới Google Apps Script. Hãy kiểm tra Internet, quyền triển khai Web App và thử lại.', 'NETWORK_ERROR');
+    throw error;
+  }
   finally{clearTimeout(timer);}
 }
 async function readJsonResponse(response,maxChars=10_000_000){
@@ -4389,13 +4403,45 @@ function buildFullSyncChanges(){
   Object.entries(DATA.lookups||{}).forEach(([key,values])=>changes.push({op:'upsert',collection:'lookups',id:key,record:{id:key,key,values:structuredClone(values),updatedAt:new Date().toISOString()},changedAt:new Date().toISOString()}));
   return changes;
 }
+function countSnapshotRecords(snapshot=DATA){
+  return syncCollectionNames().reduce((total,collection)=>{
+    const value=snapshot?.[collection];
+    return total+(collection==='lookups'&&value&&typeof value==='object'&&!Array.isArray(value)?Object.keys(value).length:Array.isArray(value)?value.length:0);
+  },0);
+}
+function appsScriptTimeoutFor(payload){
+  const action=String(payload?.action||'');
+  if(action==='getStatus')return CONFIG.networkTimeouts.status;
+  if(action==='load')return CONFIG.networkTimeouts.load;
+  if(action==='registerSchema'||action==='verifyWorkbook')return CONFIG.networkTimeouts.schema;
+  if(action==='applyChanges')return payload?.mode==='full'?CONFIG.networkTimeouts.full:CONFIG.networkTimeouts.delta;
+  if(['loginChallenge','login','adminChallenge','adminLogin','changePasswordChallenge','changeOwnPassword','requestAdminPasswordReset','confirmAdminPasswordReset'].includes(action))return CONFIG.networkTimeouts.auth;
+  return CONFIG.networkTimeouts.default;
+}
+function retryableRequestError(error){return ['REQUEST_TIMEOUT','NETWORK_ERROR','HTTP_RETRYABLE'].includes(String(error?.code||''));}
+function requestCanReplaySafely(payload){
+  const action=String(payload?.action||'');
+  if(['getStatus','load','loginChallenge','adminChallenge','changePasswordChallenge'].includes(action))return true;
+  return Boolean(AUTH.remoteStatus?.requestReplay)&&['applyChanges','registerSchema','verifyWorkbook'].includes(action);
+}
 async function postAppsScript(payload,options={}){
   const endpoint=normalizeAppsScriptEndpoint(configuredEndpoint()),password=connectionSecrets.get(CONFIG.passwordKey,''),schemaPassword=connectionSecrets.get(CONFIG.schemaPasswordKey,''),admin=Boolean(options.admin||AUTH.settingsUnlocked),authMode=options.authMode||'auto';
   const token=authMode==='none'?'':activeServerToken(admin),hasPayloadPassword=Object.prototype.hasOwnProperty.call(payload,'password'),hasPayloadSchemaPassword=Object.prototype.hasOwnProperty.call(payload,'schemaPassword');
-  const body={...payload,source:'WeddingOS',clientVersion:'9.1.4',sentAt:new Date().toISOString(),requestId:payload.requestId||uid('request'),...(token?{sessionToken:token}:{}),...(!hasPayloadPassword&&password?{password}:{}),...(!hasPayloadSchemaPassword&&schemaPassword?{schemaPassword}:{})};
-  const response=await fetchWithTimeout(endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
-  if(!response.ok)throw remoteError(`HTTP ${response.status}`,'HTTP_ERROR');
-  const result=await readJsonResponse(response);if(result.success===false)throw remoteError(result.message||'Google Sheets từ chối dữ liệu',result.code||'REMOTE_ERROR');if(options.trackRevision!==false&&result.revision!==undefined)setRemoteRevision(result.revision);return result;
+  const body={...payload,source:'WeddingOS',clientVersion:'9.1.5',sentAt:new Date().toISOString(),requestId:payload.requestId||uid('request'),...(token?{sessionToken:token}:{}),...(!hasPayloadPassword&&password?{password}:{}),...(!hasPayloadSchemaPassword&&schemaPassword?{schemaPassword}:{})};
+  const serialized=JSON.stringify(body),timeoutMs=Number(options.timeoutMs||appsScriptTimeoutFor(body)),maxRetries=Number.isInteger(options.retries)?Math.max(0,options.retries):(requestCanReplaySafely(body)?1:0);
+  let lastError;
+  for(let attempt=0;attempt<=maxRetries;attempt+=1){
+    try{
+      const response=await fetchWithTimeout(endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:serialized},timeoutMs);
+      if(!response.ok)throw remoteError(`HTTP ${response.status}`,response.status>=500?'HTTP_RETRYABLE':'HTTP_ERROR');
+      const result=await readJsonResponse(response);if(result.success===false)throw remoteError(result.message||'Google Sheets từ chối dữ liệu',result.code||'REMOTE_ERROR');if(options.trackRevision!==false&&result.revision!==undefined)setRemoteRevision(result.revision);return result;
+    }catch(error){
+      lastError=error;
+      if(attempt>=maxRetries||!retryableRequestError(error))break;
+      await wait(1200*(attempt+1));
+    }
+  }
+  throw lastError;
 }
 async function syncSchemaToGoogleSheets(reason='manual'){
   if(UI.syncing)return;const endpoint=configuredEndpoint();if(!endpoint){toast('Chưa cấu hình Google Sheets Apps Script URL trong tab Thiết lập.','error');navigate('settings');return;}if(!isAdministrator()&&!connectionSecrets.get(CONFIG.passwordKey,'')){toast('Cần mở khóa quyền quản trị để cập nhật cấu trúc Google Sheets.','error');return;}
@@ -4404,14 +4450,14 @@ async function syncAllDataToGoogleSheets(reason='manual'){
   if(UI.syncing)return;const endpoint=configuredEndpoint();if(!endpoint){toast('Chưa cấu hình Google Sheets Apps Script URL trong tab Thiết lập.','error');navigate('settings');return;}UI.syncing=true;setButtonLoading('syncButton',true,'Đang đồng bộ');setButtonLoading('fullSyncButton',true,'Đang đẩy dữ liệu');try{
     const status=await getServerStatus(),hasRemote=Boolean(status?.hasData),confirmReplace=hasRemote&&reason==='manual'&&confirm('Google Sheets đã có dữ liệu. Đồng bộ toàn bộ sẽ thay thế dữ liệu từ xa. Bạn có chắc chắn muốn tiếp tục?');
     if(hasRemote&&!confirmReplace){if(!UI.pendingChanges.length){await hydrateFromGoogleSheets(true);toast('Đã tải dữ liệu hiện có từ Google Sheets thay vì ghi đè.','info');}else toast('Google Sheets đã có dữ liệu. Hãy xử lý thay đổi cục bộ trước khi tải lại; hệ thống không tự ghi đè.','error');return;}
-    const changes=buildFullSyncChanges(),manifest=buildSchemaManifest(),result=await postAppsScript({action:'applyChanges',mode:'full',replaceRemote:true,confirmReplaceRemote:confirmReplace,baseRevision:Number(status?.revision||0),reason,schema:manifest,changes,snapshot:structuredClone(DATA)},{admin:true});recordSchemaSync(endpoint,result,manifest);UI.pendingChanges=[];savePendingChanges();UI.lastSyncAt=new Date().toISOString();storage.set('wedding-last-sync-at',UI.lastSyncAt);storage.set(CONFIG.fullSyncEndpointKey,endpoint);storage.set(CONFIG.lastFullSyncAtKey,UI.lastSyncAt);setRemoteRevision(result.revision||0);toast(`Đã đồng bộ toàn bộ ${changes.length} bản ghi và danh mục.`,'success');if(UI.tab==='dashboard'||UI.tab==='settings')renderPage();
+    const snapshot=structuredClone(DATA),recordCount=countSnapshotRecords(snapshot),manifest=buildSchemaManifest(),result=await postAppsScript({action:'applyChanges',mode:'full',replaceRemote:true,confirmReplaceRemote:confirmReplace,baseRevision:Number(status?.revision||0),reason,schema:manifest,snapshot},{admin:true});recordSchemaSync(endpoint,result,manifest);UI.pendingChanges=[];savePendingChanges();UI.lastSyncAt=new Date().toISOString();storage.set('wedding-last-sync-at',UI.lastSyncAt);storage.set(CONFIG.fullSyncEndpointKey,endpoint);storage.set(CONFIG.lastFullSyncAtKey,UI.lastSyncAt);setRemoteRevision(result.revision||0);toast(`Đã đồng bộ toàn bộ ${recordCount} bản ghi và danh mục.`,'success');if(UI.tab==='dashboard'||UI.tab==='settings')renderPage();
   }catch(error){console.error('Full sync failed',error);toast(`Không thể đồng bộ toàn bộ dữ liệu: ${error.message}`,'error');}finally{UI.syncing=false;setButtonLoading('syncButton',false);setButtonLoading('fullSyncButton',false);updatePendingIndicators();}}
 async function syncPreview(){
   if(UI.syncing)return;const endpoint=configuredEndpoint();if(!endpoint){toast('Chưa cấu hình Google Sheets Apps Script URL trong tab Thiết lập.','error');navigate('settings');return;}UI.syncing=true;setButtonLoading('syncButton',true,'Đang đồng bộ');try{
     const status=await getServerStatus();if(status.requiresAccountLogin&&!activeServerToken(false)&&!connectionSecrets.get(CONFIG.passwordKey,'')){enforceLoginGate();throw remoteError('Bạn cần đăng nhập trước khi đồng bộ.','AUTH_REQUIRED');}
     if(!status.hasData){UI.syncing=false;setButtonLoading('syncButton',false);await syncAllDataToGoogleSheets('first-sync');return;}
     if(Number(status.revision)!==remoteRevision())throw remoteError('Dữ liệu Google Sheets đã thay đổi trên thiết bị khác. Hãy tải lại trước khi đồng bộ.','REVISION_CONFLICT');
-    if(!UI.pendingChanges.length){if(needsSchemaSync(endpoint)&&isAdministrator()){await syncSchemaToGoogleSheets('automatic');return;}toast('Không có thay đổi mới cần đồng bộ.','info');return;}
+    if(!UI.pendingChanges.length){if(needsSchemaSync(endpoint)&&isAdministrator()){UI.syncing=false;setButtonLoading('syncButton',false);await syncSchemaToGoogleSheets('automatic');return;}toast('Không có thay đổi mới cần đồng bộ.','info');return;}
     const manifest=buildSchemaManifest(),result=await postAppsScript({action:'applyChanges',mode:'delta',baseRevision:remoteRevision(),schema:manifest,changes:structuredClone(UI.pendingChanges)},{admin:isAdministrator()});recordSchemaSync(endpoint,result,manifest);UI.pendingChanges=[];savePendingChanges();UI.lastSyncAt=new Date().toISOString();storage.set('wedding-last-sync-at',UI.lastSyncAt);setRemoteRevision(result.revision||remoteRevision());toast('Đã đồng bộ dữ liệu an toàn lên Google Sheets.','success');if(UI.tab==='dashboard'||UI.tab==='settings')renderPage();
   }catch(error){console.error('Delta sync failed',error);toast(error.code==='REVISION_CONFLICT'?'Phát hiện xung đột dữ liệu. Các thay đổi cục bộ vẫn được giữ nguyên để bạn kiểm tra.':`Không thể đồng bộ Google Sheets: ${error.message}`,'error');}finally{UI.syncing=false;setButtonLoading('syncButton',false);updatePendingIndicators();}}
 
