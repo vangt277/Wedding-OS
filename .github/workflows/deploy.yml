@@ -1,10 +1,13 @@
-name: Deploy static site to Netlify
+name: Deploy to Netlify
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
@@ -17,33 +20,45 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: 20
 
       - name: Verify website files
+        shell: bash
         run: |
-          echo "Checking website files..."
-          ls -la
-          test -f index.html
-          test -f style.css
-          test -f script.js
+          test -f index.html || {
+            echo "::error::index.html does not exist"
+            exit 1
+          }
 
-      - name: Deploy to Netlify
+      - name: Verify Netlify secrets
+        shell: bash
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
-          if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
-            echo "Missing NETLIFY_AUTH_TOKEN"
+          test -n "$NETLIFY_AUTH_TOKEN" || {
+            echo "::error::NETLIFY_AUTH_TOKEN is missing"
             exit 1
-          fi
+          }
 
-          if [ -z "$NETLIFY_SITE_ID" ]; then
-            echo "Missing NETLIFY_SITE_ID"
+          test -n "$NETLIFY_SITE_ID" || {
+            echo "::error::NETLIFY_SITE_ID is missing"
             exit 1
-          fi
+          }
 
-          npx --yes netlify-cli@latest deploy \
-            --dir=. \
+          echo "Netlify credentials are configured."
+
+      - name: Install Netlify CLI
+        run: npm install --no-save netlify-cli
+
+      - name: Deploy to Netlify
+        shell: bash
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx netlify deploy \
+            --dir="." \
+            --prod \
             --site="$NETLIFY_SITE_ID" \
-            --auth="$NETLIFY_AUTH_TOKEN" \
-            --prod
+            --auth="$NETLIFY_AUTH_TOKEN"
