@@ -1,64 +1,39 @@
-name: Deploy to Netlify
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Verify website files
-        shell: bash
-        run: |
-          test -f index.html || {
-            echo "::error::index.html does not exist"
-            exit 1
-          }
-
-      - name: Verify Netlify secrets
+      - name: Test Netlify API access
         shell: bash
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
-          test -n "$NETLIFY_AUTH_TOKEN" || {
-            echo "::error::NETLIFY_AUTH_TOKEN is missing"
-            exit 1
-          }
+          set -euo pipefail
 
-          test -n "$NETLIFY_SITE_ID" || {
-            echo "::error::NETLIFY_SITE_ID is missing"
-            exit 1
-          }
+          HTTP_CODE=$(curl -sS \
+            -o /tmp/netlify-project.json \
+            -w "%{http_code}" \
+            -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+            "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID")
 
-          echo "Netlify credentials are configured."
+          echo "Netlify API status: $HTTP_CODE"
 
-      - name: Install Netlify CLI
-        run: npm install --no-save netlify-cli
-
-      - name: Deploy to Netlify
-        shell: bash
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: |
-          npx netlify deploy \
-            --dir="." \
-            --prod \
-            --site="$NETLIFY_SITE_ID" \
-            --auth="$NETLIFY_AUTH_TOKEN"
+          case "$HTTP_CODE" in
+            200)
+              PROJECT_NAME=$(jq -r '.name' /tmp/netlify-project.json)
+              echo "Token access confirmed for project: $PROJECT_NAME"
+              ;;
+            401)
+              echo "::error::NETLIFY_AUTH_TOKEN is invalid, expired, or revoked."
+              exit 1
+              ;;
+            403)
+              echo "::error::The token has no permission for this Netlify team/project."
+              exit 1
+              ;;
+            404)
+              echo "::error::NETLIFY_SITE_ID is incorrect, or the token cannot see this project."
+              exit 1
+              ;;
+            *)
+              echo "::error::Unexpected Netlify API response: $HTTP_CODE"
+              cat /tmp/netlify-project.json
+              exit 1
+              ;;
+          esac
