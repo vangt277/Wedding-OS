@@ -67,8 +67,8 @@
 
     <!-- Main shell -->
     <div id="mainShell" class="min-h-screen lg:pl-[284px]">
-      <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/82">
-        <div class="flex min-h-20 items-center gap-3 px-4 sm:px-6 xl:px-8">
+      <header class="app-shell-header sticky top-0 z-30 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/82">
+        <div class="app-shell-header-row flex min-h-20 items-center gap-3 px-4 sm:px-6 xl:px-8">
           <button id="openSidebar" type="button" aria-label="Mở menu" class="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 lg:hidden">
             <i data-lucide="menu" class="size-5"></i>
           </button>
@@ -80,6 +80,7 @@
             <div class="mt-0.5 flex items-center gap-2">
               <h2 id="pageTitle" class="truncate text-xl font-bold tracking-tight sm:text-2xl">Tổng quan</h2>
               <span id="editModePill" class="hidden rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-700 ring-1 ring-inset ring-amber-600/15 dark:bg-amber-500/10 dark:text-amber-300">Đang chỉnh sửa</span>
+              <span id="dataHydrationStatus" class="hydration-status hidden" aria-live="polite" aria-atomic="true"></span>
             </div>
           </div>
 
@@ -137,14 +138,14 @@
     </dialog>
 
     <!-- Detail dialog -->
-    <dialog id="detailDialog" class="dialog-centered w-[calc(100%-2rem)] max-w-xl rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
-      <div class="flex items-start gap-4 border-b border-slate-200 px-5 py-5 dark:border-slate-800 sm:px-6">
+    <dialog id="detailDialog" class="dialog-centered detail-popup-shell rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
+      <div class="detail-popup-header flex items-start gap-4 border-b border-slate-200 px-5 py-5 dark:border-slate-800 sm:px-6">
         <div class="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300"><i data-lucide="eye" class="size-5"></i></div>
         <div class="min-w-0 flex-1"><p class="text-xs font-semibold uppercase tracking-[.16em] text-brand-600 dark:text-brand-400">Thông tin bản ghi</p><h3 id="detailTitle" class="mt-1 text-lg font-bold">Xem chi tiết</h3></div>
         <button type="button" data-close-dialog="detailDialog" aria-label="Đóng" class="grid size-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"><i data-lucide="x" class="size-5"></i></button>
       </div>
-      <div id="detailContent" class="app-scrollbar max-h-[65vh] overflow-y-auto px-5 py-6 sm:px-6"></div>
-      <div id="detailActions" class="flex justify-end gap-2 border-t border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6"></div>
+      <div id="detailContent" class="detail-popup-body app-scrollbar px-5 py-6 sm:px-6"></div>
+      <div id="detailActions" class="detail-popup-footer flex justify-end gap-2 border-t border-slate-200 bg-white px-5 py-4 dark:border-slate-800 dark:bg-slate-900 sm:px-6"></div>
     </dialog>
 
 
@@ -233,7 +234,7 @@
           <div class="grid size-12 place-items-center rounded-2xl bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300"><i data-lucide="shield-keyhole" class="size-6"></i></div>
           <p class="mt-5 text-xs font-semibold uppercase tracking-[.16em] text-brand-600 dark:text-brand-400">Khu vực quản trị</p>
           <h3 class="mt-1 text-xl font-bold">Nhập mật khẩu Thiết lập</h3>
-          <p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Mật khẩu mặc định lần đầu là <strong>admin@123</strong>. Hệ thống sẽ yêu cầu đổi ngay sau khi xác thực.</p>
+          <p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Nhập mật khẩu quản trị để truy cập khu vực Thiết lập.</p>
           <label class="mt-5 block"><span class="mb-2 block text-sm font-semibold">Mật khẩu quản trị</span><input id="settingsAccessPassword" type="password" autocomplete="current-password" required class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950" /></label>
           <div class="mt-4 rounded-2xl bg-emerald-50 p-4 text-xs leading-5 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-200"><strong>Đăng nhập tối ưu:</strong> mật khẩu kết nối không còn được yêu cầu tại đây. Mật khẩu quản trị hoặc tài khoản đã cấp là đủ để truy cập từ mọi thiết bị.</div>
           <div class="mt-2 flex justify-end"><button id="forgotAdminPassword" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 hover:underline dark:text-brand-300"><i data-lucide="mail" class="size-3.5"></i>Quên mật khẩu?</button></div>
@@ -352,7 +353,7 @@
     <!-- Column display settings -->
     <dialog id="columnSettingsDialog" class="dialog-centered column-dialog-shell rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
       <form id="columnSettingsForm" class="min-h-0">
-        <div class="column-dialog-header flex items-start gap-4 border-b border-slate-200 px-5 py-5 dark:border-slate-800 sm:px-6"><div class="grid size-10 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"><i data-lucide="columns-3" class="size-5"></i></div><div class="min-w-0 flex-1"><p class="text-xs font-semibold uppercase tracking-[.16em] text-brand-600 dark:text-brand-400">Tùy chỉnh danh sách</p><h3 id="columnSettingsTitle" class="mt-1 text-lg font-bold">Cột hiển thị</h3><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Bật hoặc tắt cột, sau đó dùng mũi tên để sắp xếp thứ tự.</p></div><button type="button" data-close-dialog="columnSettingsDialog" aria-label="Đóng" class="grid size-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800"><i data-lucide="x" class="size-5"></i></button></div>
+        <div class="column-dialog-header flex items-start gap-4 border-b border-slate-200 px-5 py-5 dark:border-slate-800 sm:px-6"><div class="grid size-10 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"><i data-lucide="columns-3" class="size-5"></i></div><div class="min-w-0 flex-1"><p class="text-xs font-semibold uppercase tracking-[.16em] text-brand-600 dark:text-brand-400">Tùy chỉnh danh sách</p><h3 id="columnSettingsTitle" class="mt-1 text-lg font-bold">Cột hiển thị</h3><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Bật/tắt và sắp xếp mọi cột, bao gồm cột Tác vụ. Cấu hình được lưu riêng theo tài khoản.</p></div><button type="button" data-close-dialog="columnSettingsDialog" aria-label="Đóng" class="grid size-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800"><i data-lucide="x" class="size-5"></i></button></div>
         <div id="columnSettingsList" class="app-scrollbar space-y-2 px-5 py-5 sm:px-6"></div>
         <div class="column-dialog-footer flex flex-col-reverse gap-2 border-t border-slate-200 px-5 py-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between sm:px-6"><button id="resetColumnSettingsButton" type="button" class="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 text-sm font-semibold dark:border-slate-700"><i data-lucide="rotate-ccw" class="size-4"></i>Mặc định</button><div class="column-dialog-footer-actions"><button type="button" data-close-dialog="columnSettingsDialog" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 px-4 text-sm font-semibold dark:border-slate-700"><i data-lucide="x" class="size-4"></i>Hủy</button><button type="submit" class="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-700 px-5 text-sm font-semibold text-white"><i data-lucide="save" class="size-4"></i>Lưu cấu hình</button></div></div>
       </form>
