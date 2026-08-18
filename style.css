@@ -2720,6 +2720,19 @@ PROJECT DEPENDENCIES:
     .security-note { border-left: 3px solid #f59e0b; }
     .login-overlay-note { background: linear-gradient(135deg, rgba(201,76,104,.08), rgba(79,70,229,.08)); }
 
+    .login-dialog-form { display:flex; flex-direction:column; }
+    .login-panel { text-align:center; }
+    .login-brand-mark { display:grid; width:4.5rem; height:4.5rem; margin:0 auto; place-items:center; border-radius:1.5rem; background:rgba(255,255,255,.92); box-shadow:0 18px 40px rgba(15,23,42,.12); padding:.55rem; }
+    .dark .login-brand-mark { background:rgba(15,23,42,.92); }
+    .login-dialog-footer { display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+    .login-admin-link { text-align:left; }
+    @media (max-width: 520px) {
+      .login-dialog-footer { flex-direction:column-reverse; align-items:stretch; }
+      .login-dialog-footer > * { width:100%; }
+      .login-admin-link { text-align:center; }
+      #accountLoginSubmitButton { width:100%; justify-content:center; }
+    }
+
     .dialog-centered {
       position: fixed;
       inset: 0;
@@ -3661,4 +3674,277 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .editor-multiselect__option input { width:1rem; height:1rem; accent-color:var(--color-brand-700); flex:0 0 auto; }
 @media (max-width:767px) {
   .editor-form-row { grid-template-columns:minmax(0,1fr); gap:.85rem; }
+}
+
+
+/* WeddingOS v10.0.0 — Sync V2 conflict resolution */
+.sync-conflict-dialog{width:min(42rem,calc(100vw - 2rem));max-width:42rem;overflow:hidden}
+.sync-conflict-field{border:1px solid var(--color-slate-200);border-radius:1rem;padding:1rem}
+.dark .sync-conflict-field{border-color:var(--color-slate-800)}
+.sync-conflict-warning{border-radius:1rem;background:var(--color-slate-50);padding:1rem}
+.dark .sync-conflict-warning{background:rgb(15 23 42 / .6)}
+.sync-conflict-choice{display:flex;align-items:flex-start;gap:.65rem;border:1px solid var(--color-slate-200);border-radius:.85rem;padding:.75rem;cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.dark .sync-conflict-choice{border-color:var(--color-slate-700)}
+.sync-conflict-choice:has(input:checked){border-color:var(--color-brand-400);background:var(--color-brand-50)}
+.dark .sync-conflict-choice:has(input:checked){background:rgb(201 76 104 / .1)}
+.sync-conflict-choice input{margin-top:.15rem;accent-color:var(--color-brand-600)}
+.sync-conflict-choice span{min-width:0;display:block;font-size:.8rem;line-height:1.2rem}
+.sync-conflict-choice strong{display:block;font-size:.72rem}
+.sync-conflict-choice small{display:block;margin-top:.2rem;color:var(--color-slate-500);overflow-wrap:anywhere}
+@media(max-width:767px){.sync-conflict-dialog{position:fixed;inset:auto .25rem max(.25rem,env(safe-area-inset-bottom));width:calc(100vw - .5rem);max-width:none;max-height:92dvh;border-radius:1.2rem .1.2rem .8rem .8rem}.sync-conflict-dialog form{max-height:92dvh}}
+
+/* WeddingOS v10 — migration report */
+.migration-report-dialog{width:min(54rem,calc(100vw - 2rem));max-width:54rem;overflow:hidden;}
+.migration-report-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;}
+.migration-report-stat{border:1px solid var(--color-slate-200);border-radius:1rem;padding:.85rem;background:var(--color-slate-50);}
+.dark .migration-report-stat{border-color:var(--color-slate-800);background:rgb(2 6 23 / .4);}
+.migration-report-issue{border:1px solid var(--color-slate-200);border-radius:1rem;padding:.85rem;}
+.dark .migration-report-issue{border-color:var(--color-slate-800);}
+@media(max-width:767px){.migration-report-dialog{position:fixed;inset:auto .25rem max(.25rem,env(safe-area-inset-bottom));width:calc(100vw - .5rem);max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - .5rem);border-radius:1.25rem 1.25rem .8rem .8rem}.migration-report-summary{grid-template-columns:1fr;}}
+
+
+/* WeddingOS 2026-08-17: login/bootstrap/dialog/date UX refinements */
+.login-panel { text-align: left; }
+.login-brand-mark { margin: 0; }
+.login-panel .remember-login-row { padding-left: 0; padding-right: 0; }
+.login-dialog-footer .login-admin-link { text-align: left; }
+@media (max-width: 520px) {
+  .login-admin-link { text-align: left; }
+}
+
+.confirm-dialog-shell {
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow: hidden;
+}
+.confirm-dialog-body {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.confirm-dialog-body > * { max-width: 100%; }
+.confirm-dialog-footer {
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 520px) {
+  .confirm-dialog-body { padding: 1.25rem; }
+  .confirm-dialog-footer { padding: 1rem 1.25rem; }
+  .confirm-dialog-footer > button { flex: 1 1 0; }
+}
+
+.settings-access-form {
+  display: flex;
+  max-height: calc(100vh - 1rem);
+  min-height: 0;
+  flex-direction: column;
+}
+.settings-access-body {
+  min-height: 0;
+  overflow-y: auto;
+}
+.settings-access-footer {
+  flex: 0 0 auto;
+  background: inherit;
+}
+#settingsAccessPassword {
+  display: block;
+  margin: 0;
+}
+
+.lookup-edit-dialog-shell {
+  width: min(31rem, calc(100vw - 1rem));
+  max-height: calc(100vh - 1rem);
+  overflow: hidden;
+}
+.lookup-edit-form {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+}
+
+
+/* Compact secondary copy in shared lookup rows; deliberately smaller than the main value. */
+.lookup-reference-count { font-size: 9px; line-height: 1.15; font-weight: 500; }
+
+
+/* WeddingOS v10.4 — compact settings/admin cards, 24-hour time controls and dialog density */
+.settings-theme-toggle {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.settings-theme-toggle:hover { border-color: transparent !important; }
+
+.admin-locked-card {
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  min-height:4.75rem;
+  padding:1rem 1.25rem;
+}
+.admin-locked-card__icon {
+  display:grid;
+  width:2.5rem;
+  height:2.5rem;
+  flex:0 0 auto;
+  place-items:center;
+  border-radius:.8rem;
+  background:var(--color-amber-50);
+  color:var(--color-amber-700);
+}
+.dark .admin-locked-card__icon {
+  background:rgb(245 158 11 / .10);
+  color:var(--color-amber-300);
+}
+.admin-locked-card__copy {
+  min-width:0;
+  flex:1 1 auto;
+}
+.admin-locked-card__copy h3 {
+  font-size:.875rem;
+  line-height:1.15rem;
+}
+.admin-locked-card__description {
+  margin-top:.2rem;
+  color:var(--color-slate-500);
+  font-size:.68rem;
+  line-height:1rem;
+}
+.dark .admin-locked-card__description { color:var(--color-slate-400); }
+.admin-locked-card__action {
+  display:inline-flex;
+  height:2.5rem;
+  flex:0 0 auto;
+  align-items:center;
+  gap:.45rem;
+  border-radius:.75rem;
+  background:var(--color-slate-900);
+  padding:0 .9rem;
+  color:#fff;
+  font-size:.7rem;
+  line-height:1;
+  font-weight:650;
+  transition:background .15s ease, transform .15s ease;
+}
+.admin-locked-card__action:hover { background:var(--color-brand-700); }
+.admin-locked-card__action:focus-visible { outline:2px solid var(--color-brand-500); outline-offset:2px; }
+.dark .admin-locked-card__action { background:#fff; color:var(--color-slate-950); }
+.dark .admin-locked-card__action:hover { background:var(--color-brand-300); }
+@media (min-width:1024px) {
+  .admin-locked-card__description { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+}
+@media (max-width:639px) {
+  .admin-locked-card { align-items:flex-start; flex-wrap:wrap; gap:.75rem; padding:.9rem 1rem; }
+  .admin-locked-card__copy { flex-basis:calc(100% - 3.25rem); }
+  .admin-locked-card__action { width:100%; justify-content:center; }
+}
+
+.compact-dialog-header {
+  gap:.7rem !important;
+  padding-top:.75rem !important;
+  padding-bottom:.75rem !important;
+}
+.compact-dialog-header > .grid.size-10 {
+  width:2.15rem !important;
+  height:2.15rem !important;
+  border-radius:.7rem !important;
+}
+.compact-dialog-header > .grid.size-10 svg { width:1rem !important; height:1rem !important; }
+.compact-dialog-header h3 {
+  margin-top:.1rem !important;
+  font-size:.9rem !important;
+  line-height:1.15rem !important;
+}
+.compact-dialog-header p {
+  margin-top:.1rem !important;
+  font-size:.625rem !important;
+  line-height:.9rem !important;
+}
+.compact-dialog-header button[aria-label="Đóng"] {
+  width:2.15rem !important;
+  height:2.15rem !important;
+  border-radius:.65rem !important;
+}
+.compact-dialog-header button[aria-label="Đóng"] svg { width:1rem !important; height:1rem !important; }
+
+.confirm-dialog-body { padding:1rem 1.25rem !important; }
+.confirm-dialog-body > .grid {
+  width:2.35rem !important;
+  height:2.35rem !important;
+  border-radius:.75rem !important;
+}
+.confirm-dialog-body h3 { margin-top:.75rem !important; font-size:.95rem !important; line-height:1.25rem !important; }
+.confirm-dialog-body p { margin-top:.25rem !important; font-size:.68rem !important; line-height:1.05rem !important; }
+.confirm-dialog-footer { padding:.75rem 1.25rem !important; }
+
+.time24-control {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
+  gap:.4rem;
+}
+.time24-select {
+  width:100%;
+  height:2.75rem;
+  min-width:0;
+  border:1px solid var(--color-slate-200);
+  border-radius:.75rem;
+  background:#fff;
+  padding:0 .65rem;
+  color:inherit;
+  font-size:.8125rem;
+  font-variant-numeric:tabular-nums;
+  outline:none;
+  transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.time24-select:hover { border-color:var(--color-slate-300); }
+.time24-select:focus {
+  border-color:var(--color-brand-500);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--color-brand-500) 10%, transparent);
+}
+.dark .time24-select {
+  border-color:var(--color-slate-700);
+  background:var(--color-slate-950);
+}
+.dark .time24-select:hover { border-color:var(--color-slate-600); }
+.time24-separator {
+  color:var(--color-slate-400);
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+.editor-readonly-field {
+  cursor:not-allowed;
+  border-style:dashed !important;
+  background:var(--color-slate-50) !important;
+  color:var(--color-slate-600) !important;
+}
+.dark .editor-readonly-field {
+  background:var(--color-slate-800) !important;
+  color:var(--color-slate-300) !important;
+}
+
+@media (max-width:767px) {
+  .compact-dialog-header { padding-top:max(.75rem, env(safe-area-inset-top)) !important; }
+}
+
+/* WeddingOS v10.5 — Lookup ordering */
+.lookup-sort-row {
+  position: relative;
+  transition: background-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.lookup-drag-handle {
+  cursor: grab;
+  touch-action: manipulation;
+}
+.lookup-drag-handle:active { cursor: grabbing; }
+.lookup-sort-row.is-dragging { opacity: .48; }
+.lookup-sort-row.is-drag-over {
+  box-shadow: inset 0 0 0 2px var(--color-brand-500);
+  background-color: color-mix(in srgb, var(--color-brand-50) 72%, white);
+}
+.dark .lookup-sort-row.is-drag-over {
+  background-color: color-mix(in srgb, var(--color-brand-900) 20%, var(--color-slate-950));
+}
+@media (max-width: 420px) {
+  .lookup-order-actions { gap: 0; }
+  .lookup-sort-row { padding-inline: .375rem; }
 }
