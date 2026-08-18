@@ -3948,3 +3948,18 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .lookup-order-actions { gap: 0; }
   .lookup-sort-row { padding-inline: .375rem; }
 }
+
+
+/* WeddingOS v10.6 — Mobile viewport stability + dismissible create sheet */
+@media (max-width: 767px) {
+  /* iOS Safari auto-zooms form controls below 16px. Keep editable controls at
+     16px instead of disabling pinch zoom, so viewport stability and accessibility
+     are both preserved. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea,
+  .time24-select,
+  .filter-multiselect-button {
+    font-size:16px !important;
+  }
+}
