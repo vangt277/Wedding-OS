@@ -3963,3 +3963,348 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
     font-size:16px !important;
   }
 }
+
+/* WeddingOS v10.7 — Major workflow/schema upgrade UI hardening */
+.sort-dialog-shell {
+  width:min(34rem, calc(100vw - 1rem));
+  max-height:calc(100dvh - 1rem);
+  overflow:hidden;
+}
+.budget-limit-dialog {
+  width:min(34rem, calc(100vw - 1rem));
+  max-height:calc(100dvh - 1rem);
+  overflow:hidden;
+}
+
+/* Vendor reference suggestions: compact derived content at the end of General info. */
+.vendor-suggestions {
+  margin-top:1rem;
+  border:1px solid var(--color-slate-200);
+  border-radius:1rem;
+  background:var(--color-slate-50);
+  padding:.9rem;
+}
+.dark .vendor-suggestions {
+  border-color:var(--color-slate-700);
+  background:rgb(2 6 23 / .45);
+}
+.vendor-suggestions__head { display:flex; align-items:flex-start; justify-content:space-between; gap:.75rem; }
+.vendor-suggestions__list { margin-top:.75rem; display:grid; gap:.45rem; }
+.vendor-suggestion-row {
+  display:grid;
+  grid-template-columns:minmax(7rem,.8fr) minmax(10rem,1.4fr) auto;
+  align-items:center;
+  gap:.65rem;
+  min-width:0;
+  border:1px solid var(--color-slate-200);
+  border-radius:.75rem;
+  background:#fff;
+  padding:.55rem .65rem;
+}
+.dark .vendor-suggestion-row { border-color:var(--color-slate-700); background:var(--color-slate-900); }
+.vendor-suggestion-link {
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--color-brand-700);
+  font-size:.7rem;
+  font-weight:600;
+  text-decoration:none;
+}
+.vendor-suggestion-link:hover { text-decoration:underline; }
+.vendor-suggestion-link--empty { color:var(--color-slate-400); font-weight:500; }
+.vendor-suggestion-link--empty:hover { text-decoration:none; }
+.dark .vendor-suggestion-link { color:var(--color-brand-300); }
+.dark .vendor-suggestion-link--empty { color:var(--color-slate-500); }
+.vendor-suggestion-action {
+  display:inline-flex;
+  height:2rem;
+  align-items:center;
+  justify-content:center;
+  gap:.3rem;
+  border:1px solid var(--color-slate-200);
+  border-radius:.65rem;
+  padding:0 .6rem;
+  color:var(--color-slate-600);
+  font-size:.65rem;
+  font-weight:700;
+  white-space:nowrap;
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+.vendor-suggestion-action:hover { border-color:var(--color-brand-300); background:var(--color-brand-50); color:var(--color-brand-700); }
+.dark .vendor-suggestion-action { border-color:var(--color-slate-700); color:var(--color-slate-300); }
+.dark .vendor-suggestion-action:hover { border-color:var(--color-brand-700); background:rgb(201 76 104 / .10); color:var(--color-brand-300); }
+
+/* Timeline group mode: one visual block per related event; group content is never paginated. */
+.timeline-group-list { display:grid; gap:1rem; padding:1rem; }
+.timeline-group {
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--color-slate-200);
+  border-radius:1rem;
+  background:#fff;
+}
+.dark .timeline-group { border-color:var(--color-slate-700); background:var(--color-slate-900); }
+.timeline-group__header {
+  display:flex;
+  min-height:3.25rem;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  border-bottom:1px solid var(--color-slate-200);
+  background:var(--color-slate-50);
+  padding:.7rem 1rem;
+}
+.dark .timeline-group__header { border-color:var(--color-slate-700); background:rgb(2 6 23 / .45); }
+.timeline-group__count {
+  display:grid;
+  min-width:2rem;
+  height:2rem;
+  place-items:center;
+  border-radius:999px;
+  background:var(--color-brand-50);
+  padding:0 .45rem;
+  color:var(--color-brand-700);
+  font-size:.7rem;
+  font-weight:800;
+}
+.dark .timeline-group__count { background:rgb(201 76 104 / .12); color:var(--color-brand-300); }
+
+/* Detail popup becomes content-driven on desktop so Budget detail has no large empty footer gap. */
+@media (min-width:768px) {
+  .detail-popup-shell {
+    height:auto;
+    max-height:calc(100dvh - 2rem);
+  }
+  #detailDialog[open] { grid-template-rows:auto minmax(0,auto) auto; }
+  .detail-popup-body { max-height:calc(100dvh - 11rem); }
+}
+
+/* Mobile advanced search: viewport-safe sheet with independent body scroll and sticky footer. */
+@media (max-width:767px) {
+  #filterDialog.filter-dialog-shell {
+    inset:max(.25rem, env(safe-area-inset-top)) .25rem max(.25rem, env(safe-area-inset-bottom)) .25rem;
+    width:auto;
+    height:auto;
+    max-width:none;
+    max-height:none;
+    margin:0;
+    overflow:hidden;
+    border-radius:1.1rem;
+  }
+  #filterDialog[open] { display:block; }
+  #filterDialog #filterForm {
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    width:100%;
+    height:100%;
+    min-height:0;
+    max-height:none;
+    overflow:hidden;
+  }
+  #filterDialog .filter-dialog-body {
+    min-width:0;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    padding:1rem;
+    padding-bottom:1.25rem;
+  }
+  #filterDialog .filter-footer-shadow {
+    position:relative;
+    z-index:4;
+    flex-direction:row;
+    align-items:center;
+    justify-content:stretch;
+    gap:.5rem;
+    padding:.75rem 1rem max(.75rem, env(safe-area-inset-bottom));
+  }
+  #filterDialog .filter-footer-shadow > button { min-width:0; flex:1 1 0; height:2.75rem; padding-inline:.65rem; }
+  #filterDialog .filter-control,
+  #filterDialog .filter-multiselect,
+  #filterDialog .filter-multiselect-button,
+  #filterDialog .filter-multiselect-menu,
+  #filterDialog .filter-option-list,
+  #filterDialog .filter-date-grid { min-width:0; max-width:100%; }
+  #filterDialog .filter-multiselect-menu { overflow:hidden; }
+  #filterDialog .filter-option-row { min-width:0; overflow-wrap:anywhere; }
+  #filterDialog .filter-chip { max-width:calc(100vw - 3rem); }
+
+  .vendor-suggestion-row { grid-template-columns:minmax(0,1fr); gap:.45rem; }
+  .vendor-suggestion-action { width:100%; }
+  .timeline-group-list { padding:.65rem; gap:.75rem; }
+  .timeline-group__header { padding:.65rem .8rem; }
+
+  .sort-dialog-shell,
+  .budget-limit-dialog {
+    width:calc(100vw - 1rem);
+    max-height:calc(100dvh - 1rem);
+  }
+
+  /* Keep detail content-driven on mobile as well; large records still scroll at 92dvh. */
+  .detail-popup-shell { height:auto; max-height:92dvh; }
+  .detail-popup-body { max-height:calc(92dvh - 9.5rem); }
+}
+
+
+/* WeddingOS v10.8 / Schema v13 — UX consistency, grouping, guide and financial gates */
+.column-option-row {
+  grid-template-columns:minmax(0,1fr) auto !important;
+  min-height:3.5rem;
+  gap:.75rem !important;
+  padding:.65rem .75rem !important;
+}
+.column-option-row__main { display:flex; min-width:0; align-items:center; gap:.75rem; cursor:pointer; }
+.column-option-row__copy { display:flex; min-width:0; flex:1; flex-direction:column; gap:.1rem; }
+.column-option-row__label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.82rem; font-weight:700; color:var(--color-slate-700); }
+.dark .column-option-row__label { color:var(--color-slate-200); }
+.column-option-row__code { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.62rem; color:var(--color-slate-400); }
+.column-option-row__actions { display:inline-flex; flex:0 0 auto; align-items:center; gap:.25rem; }
+.column-option-row--actions { border-style:dashed !important; background:var(--color-slate-50); }
+.dark .column-option-row--actions { background:rgb(2 6 23 / .45); }
+.column-option-row--actions .column-option-row__label { color:var(--color-brand-700); }
+.dark .column-option-row--actions .column-option-row__label { color:var(--color-brand-300); }
+
+.sort-dialog-shell form { display:grid; grid-template-rows:auto minmax(0,1fr) auto; max-height:calc(100dvh - 1rem); }
+.sort-direction-choice { min-width:0; }
+.sort-direction-choice > span { min-height:3rem; display:flex; align-items:center; justify-content:center; gap:.5rem; text-align:center; }
+
+.timeline-complete-toggle { display:inline-grid; flex:0 0 auto; width:2rem; height:2rem; place-items:center; border-radius:.7rem; color:var(--color-slate-400); cursor:pointer; transition:.15s ease; }
+.timeline-complete-toggle:hover { background:var(--color-emerald-50); color:var(--color-emerald-700); }
+.dark .timeline-complete-toggle:hover { background:rgb(16 185 129 / .10); color:var(--color-emerald-300); }
+.timeline-complete-toggle input { position:absolute; opacity:0; pointer-events:none; }
+.timeline-complete-toggle:has(input:checked) { background:var(--color-emerald-50); color:var(--color-emerald-700); }
+.dark .timeline-complete-toggle:has(input:checked) { background:rgb(16 185 129 / .10); color:var(--color-emerald-300); }
+.record-title-with-check { display:flex; min-width:0; align-items:flex-start; gap:.45rem; }
+.timeline-complete-toggle--mobile { width:2.25rem; height:2.25rem; border:1px solid var(--color-slate-200); background:var(--color-slate-50); }
+.dark .timeline-complete-toggle--mobile { border-color:var(--color-slate-700); background:var(--color-slate-950); }
+
+.editor-section--locked { position:relative; overflow:hidden; }
+.editor-section--locked .editor-form-section__rows,
+.editor-section--locked .editor-form-section__grid { opacity:.5; filter:saturate(.5); }
+.editor-section-lock-note { display:flex; width:100%; margin-top:.75rem; align-items:center; justify-content:center; gap:.5rem; border:1px dashed var(--color-amber-300); border-radius:.85rem; background:var(--color-amber-50); padding:.7rem .9rem; color:var(--color-amber-700); font-size:.72rem; font-weight:700; text-align:center; }
+.dark .editor-section-lock-note { border-color:rgb(245 158 11 / .45); background:rgb(245 158 11 / .08); color:var(--color-amber-300); }
+.vendor-payment-gate-dialog { width:min(32rem,calc(100vw - 1rem)); max-height:calc(100dvh - 1rem); overflow:hidden; }
+
+.guide-hero,.guide-section,.guide-card { border:1px solid var(--color-slate-200); background:#fff; box-shadow:var(--tw-shadow,0 1px 2px rgb(15 23 42 / .04)); }
+.dark .guide-hero,.dark .guide-section,.dark .guide-card { border-color:var(--color-slate-800); background:var(--color-slate-900); }
+.guide-hero { border-radius:1.5rem; padding:1.25rem 1.35rem; }
+.guide-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1rem; }
+.guide-card { display:flex; min-width:0; gap:.8rem; border-radius:1rem; padding:1rem; }
+.guide-card__icon { display:grid; width:2.35rem; height:2.35rem; flex:0 0 auto; place-items:center; border-radius:.8rem; background:var(--color-brand-50); color:var(--color-brand-700); }
+.dark .guide-card__icon { background:rgb(201 76 104 / .10); color:var(--color-brand-300); }
+.guide-card h4 { font-size:.82rem; font-weight:800; }
+.guide-card p { margin-top:.3rem; font-size:.72rem; line-height:1.35rem; color:var(--color-slate-500); }
+.guide-section { margin-top:1rem; border-radius:1.25rem; padding:1rem 1.1rem; }
+.guide-section__heading h4 { font-size:.88rem; font-weight:800; }
+.guide-section__heading p { margin-top:.25rem; font-size:.7rem; line-height:1.25rem; color:var(--color-slate-500); }
+.guide-required-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.55rem; margin-top:.8rem; }
+.guide-required-list > div { display:flex; min-width:0; flex-direction:column; gap:.2rem; border-radius:.8rem; background:var(--color-slate-50); padding:.65rem .75rem; }
+.dark .guide-required-list > div { background:rgb(2 6 23 / .45); }
+.guide-required-list strong { font-size:.72rem; }
+.guide-required-list span,.guide-formulas p { font-size:.68rem; line-height:1.2rem; color:var(--color-slate-500); }
+.guide-formulas { display:grid; gap:.45rem; margin-top:.75rem; }
+
+.budget-detail-layout { display:grid; gap:.85rem; }
+.budget-detail-section { border:1px solid var(--color-slate-200); border-radius:1rem; overflow:hidden; }
+.dark .budget-detail-section { border-color:var(--color-slate-700); }
+.budget-detail-section__title { display:flex; align-items:center; gap:.45rem; border-bottom:1px solid var(--color-slate-200); background:var(--color-slate-50); padding:.65rem .8rem; color:var(--color-slate-600); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
+.dark .budget-detail-section__title { border-color:var(--color-slate-700); background:rgb(2 6 23 / .45); color:var(--color-slate-300); }
+.budget-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; }
+.budget-detail-grid--identity { grid-template-columns:2fr 1fr 1fr; }
+.budget-detail-grid--notes { grid-template-columns:1fr; }
+.budget-detail-field { min-width:0; padding:.75rem .85rem; border-right:1px solid var(--color-slate-100); border-bottom:1px solid var(--color-slate-100); }
+.dark .budget-detail-field { border-color:var(--color-slate-800); }
+.budget-detail-field dt { font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--color-slate-400); }
+.budget-detail-field dd { margin-top:.3rem; min-width:0; font-size:.78rem; line-height:1.25rem; color:var(--color-slate-700); overflow-wrap:anywhere; }
+.dark .budget-detail-field dd { color:var(--color-slate-200); }
+
+@media (max-width:767px) {
+  .column-option-row { min-height:3.75rem; padding:.6rem !important; }
+  .column-option-row__label { font-size:.8rem; }
+  .column-option-row__code { font-size:.6rem; }
+  .column-option-row__actions .column-move-button { width:2.2rem; height:2.2rem; }
+  .sort-dialog-shell { width:calc(100vw - .5rem); margin:.25rem; }
+  .sort-dialog-shell .grid.grid-cols-2 { grid-template-columns:1fr; }
+  .guide-grid,.guide-required-list { grid-template-columns:1fr; }
+  .guide-hero { padding:1rem; }
+  .budget-detail-grid,.budget-detail-grid--identity { grid-template-columns:1fr; }
+  .budget-detail-field { border-right:0; }
+}
+
+/* WeddingOS v10.9 — financial UI consistency + mobile sort/card polish */
+.sort-dialog-footer {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.5rem;
+  align-items:center;
+}
+.sort-dialog-footer__button { min-width:0; width:100%; }
+.widget-value-mobile { display:none; }
+.mobile-card-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.75rem;
+  margin-top:1rem;
+}
+.mobile-card-field {
+  min-width:0;
+  border-radius:.8rem;
+  background:var(--color-slate-50);
+  padding:.7rem .75rem;
+}
+.dark .mobile-card-field { background:rgb(2 6 23 / .45); }
+.mobile-card-field--full { grid-column:1 / -1; }
+.mobile-card-actions {
+  display:flex;
+  gap:.35rem;
+  margin-top:1rem;
+  padding-top:.8rem;
+  border-top:1px solid var(--color-slate-100);
+}
+.dark .mobile-card-actions { border-color:var(--color-slate-800); }
+
+@media (max-width:767px) {
+  /* Sorting is a true centered modal on mobile, not an edge-to-edge sheet. */
+  .sort-dialog-shell {
+    width:calc(100vw - 2rem) !important;
+    max-width:30rem;
+    max-height:calc(100dvh - 2rem) !important;
+    margin:auto !important;
+    border-radius:1.25rem !important;
+  }
+  .sort-dialog-shell .grid.grid-cols-2 {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  .sort-direction-choice > span {
+    min-height:3.1rem;
+    padding:.55rem .4rem;
+    font-size:.78rem;
+  }
+  .sort-dialog-footer {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:.4rem;
+    padding-inline:.75rem !important;
+  }
+  .sort-dialog-footer__button {
+    height:2.65rem;
+    padding-inline:.35rem !important;
+    font-size:.72rem !important;
+    white-space:nowrap;
+  }
+  .sort-dialog-footer__button svg,
+  .sort-dialog-footer__button i { width:.9rem; height:.9rem; }
+
+  /* Mobile cards follow the user's selected column order with two equal cells/row. */
+  .mobile-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .mobile-card-field--full { grid-column:1 / -1; }
+  .mobile-card-value { min-width:0; overflow-wrap:anywhere; }
+
+  /* Budget widgets use M/B abbreviations only on mobile; full VND remains accessible via title/aria-label. */
+  .widget-value-desktop { display:none; }
+  .widget-value-mobile { display:inline; }
+  .widget-grid--budget .widget-stat-card__value { font-size:1.05rem; line-height:1.3rem; white-space:nowrap; }
+}

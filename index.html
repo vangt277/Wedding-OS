@@ -389,6 +389,43 @@
       </form>
     </dialog>
 
+    <!-- Universal list sorting -->
+    <dialog id="sortDialog" class="dialog-centered sort-dialog-shell rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
+      <form id="sortForm" class="min-h-0">
+        <div class="compact-dialog-header flex items-start gap-3 border-b border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6">
+          <div class="grid size-9 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"><i data-lucide="arrow-up-down" class="size-4"></i></div>
+          <div class="min-w-0 flex-1"><p class="text-[10px] font-semibold uppercase tracking-[.14em] text-brand-600 dark:text-brand-400">Danh sách</p><h3 id="sortDialogTitle" class="mt-0.5 text-base font-bold">Sắp xếp danh sách</h3><p class="mt-1 text-[11px] leading-4 text-slate-500 dark:text-slate-400">Cấu hình được lưu riêng theo tài khoản và tính năng.</p></div>
+          <button type="button" data-close-dialog="sortDialog" aria-label="Đóng" class="grid size-9 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800"><i data-lucide="x" class="size-4"></i></button>
+        </div>
+        <div class="space-y-4 px-5 py-5 sm:px-6">
+          <label class="block"><span class="mb-2 block text-sm font-semibold">Sắp xếp theo</span><select id="sortField" class="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950"></select></label>
+          <fieldset><legend class="mb-2 text-sm font-semibold">Thứ tự</legend><div class="grid grid-cols-2 gap-2"><label class="sort-direction-choice"><input id="sortDirectionAsc" type="radio" name="sortDirection" value="asc" /><span><i data-lucide="arrow-up-narrow-wide" class="size-4"></i>Tăng dần</span></label><label class="sort-direction-choice"><input id="sortDirectionDesc" type="radio" name="sortDirection" value="desc" /><span><i data-lucide="arrow-down-wide-narrow" class="size-4"></i>Giảm dần</span></label></div></fieldset>
+        </div>
+        <div class="sort-dialog-footer border-t border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6"><button id="resetSortButton" type="button" class="sort-dialog-footer__button inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 text-sm font-semibold dark:border-slate-700"><i data-lucide="rotate-ccw" class="size-4"></i>Mặc định</button><button type="button" data-close-dialog="sortDialog" class="sort-dialog-footer__button inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-semibold dark:border-slate-700">Hủy</button><button type="submit" class="sort-dialog-footer__button inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-700 px-5 text-sm font-semibold text-white"><i data-lucide="check" class="size-4"></i>Áp dụng</button></div>
+      </form>
+    </dialog>
+
+    <!-- Vendor payment status gate -->
+    <dialog id="vendorPaymentGateDialog" class="dialog-centered vendor-payment-gate-dialog rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
+      <div class="px-5 py-5 sm:px-6">
+        <div class="grid size-10 place-items-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"><i data-lucide="lock-keyhole" class="size-5"></i></div>
+        <h3 class="mt-4 text-lg font-bold">Thanh toán & hợp đồng đang khóa</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Chỉ nhập dữ liệu hợp đồng và thanh toán khi Nhà cung cấp có trạng thái <strong>Đã chọn</strong>, <strong>Đã cọc</strong> hoặc <strong>Hoàn tất</strong>. Quy tắc này ngăn Nhà cung cấp đang khảo sát ảnh hưởng sai đến số liệu Ngân sách.</p>
+      </div>
+      <div class="flex justify-end border-t border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6"><button type="button" data-close-dialog="vendorPaymentGateDialog" class="inline-flex h-10 items-center justify-center rounded-xl bg-brand-700 px-5 text-sm font-semibold text-white">Đã hiểu</button></div>
+    </dialog>
+
+    <!-- Budget ceiling warning -->
+    <dialog id="budgetLimitDialog" class="dialog-centered budget-limit-dialog rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
+      <div class="px-5 py-5 sm:px-6">
+        <div class="grid size-11 place-items-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"><i data-lucide="triangle-alert" class="size-5"></i></div>
+        <h3 class="mt-4 text-lg font-bold">Vượt ngân sách tổng</h3>
+        <p id="budgetLimitMessage" class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400"></p>
+        <div id="budgetLimitSummary" class="mt-4 grid gap-2 rounded-2xl bg-slate-50 p-4 text-sm dark:bg-slate-950/60"></div>
+      </div>
+      <div class="flex flex-col-reverse gap-2 border-t border-slate-200 px-5 py-4 dark:border-slate-800 sm:flex-row sm:justify-end sm:px-6"><button type="button" data-close-dialog="budgetLimitDialog" class="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 px-4 text-sm font-semibold dark:border-slate-700">Điều chỉnh hạng mục</button><button id="budgetLimitOpenSettings" type="button" class="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-700 px-4 text-sm font-semibold text-white"><i data-lucide="settings-2" class="size-4"></i>Mở Thiết lập</button></div>
+    </dialog>
+
     <!-- Dashboard description editor -->
     <dialog id="dashboardTextDialog" class="dialog-centered w-[calc(100%-2rem)] max-w-xl rounded-3xl border border-slate-200 bg-white p-0 shadow-panel dark:border-slate-800 dark:bg-slate-900">
       <form id="dashboardTextForm"><div class="compact-dialog-header flex items-start gap-4 border-b border-slate-200 px-5 py-5 dark:border-slate-800 sm:px-6"><div class="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300"><i data-lucide="text-cursor-input" class="size-5"></i></div><div class="min-w-0 flex-1"><p class="text-xs font-semibold uppercase tracking-[.16em] text-brand-600 dark:text-brand-400">Nội dung Tổng quan</p><h3 class="mt-1 text-lg font-bold">Chỉnh sửa mô tả</h3></div><button type="button" data-close-dialog="dashboardTextDialog" aria-label="Đóng" class="grid size-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800"><i data-lucide="x" class="size-5"></i></button></div><div class="px-5 py-5 sm:px-6"><label class="block"><span class="mb-2 block text-sm font-semibold">Nội dung giới thiệu</span><textarea id="dashboardDescriptionInput" required maxlength="320" rows="5" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm leading-6 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-950"></textarea><span class="mt-1 block text-[10px] text-slate-400">Tối đa 320 ký tự.</span></label></div><div class="flex justify-end gap-2 border-t border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6"><button type="button" data-close-dialog="dashboardTextDialog" class="inline-flex h-10 items-center rounded-xl border border-slate-200 px-4 text-sm font-semibold dark:border-slate-700">Hủy</button><button type="submit" class="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-700 px-5 text-sm font-semibold text-white"><i data-lucide="save" class="size-4"></i>Lưu nội dung</button></div></form>
