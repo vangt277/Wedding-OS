@@ -4652,7 +4652,7 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
    reusable multi-select is normally a full-width editor field. */
 .survey-plan-meta-grid > .editor-form-field--wide { grid-column:auto; }
 
-/* WeddingOS v12.2 — Survey polish, notification receipts and core table density */
+/* WeddingOS v12.3 — Survey/References/record links polish and core table density */
 /* Icon action tooltips: desktop hover/focus only; mobile keeps the compact visual actions. */
 .action-tooltip { position:relative; }
 .action-tooltip[data-tooltip]::after {
@@ -4865,4 +4865,135 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .survey-group-meta { max-width:calc(100vw - 10.75rem); }
   .survey-history-card { grid-template-columns:1fr; }
   .survey-mobile-action { min-height:2.4rem; padding-inline:.3rem; font-size:.58rem; }
+}
+
+
+/* WeddingOS v12.3 — related records, reference grouping, survey evaluation and dashboard refinements */
+.checklist-start-status-note{margin-top:.4rem;font-size:10px;line-height:1.35;color:var(--color-emerald-700)}
+.dark .checklist-start-status-note{color:var(--color-emerald-300)}
+.reference-rating-hidden [data-editor-field="rating"]{display:none!important}
+.checklist-related-panel{margin-top:1rem;border:1px dashed var(--color-slate-300);border-radius:1rem;padding:1rem;background:var(--color-slate-50)}
+.dark .checklist-related-panel{border-color:var(--color-slate-700);background:rgb(2 6 23/.35)}
+.checklist-related-panel__head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.checklist-related-groups{display:grid;gap:.75rem;margin-top:.8rem}.checklist-related-group>p,.vendor-suggestion-source__title,.detail-related-group>p{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-slate-500);margin-bottom:.4rem}.checklist-related-chip{display:flex;align-items:center;gap:.3rem;margin:.3rem 0}.checklist-related-chip>button:first-child{flex:1;text-align:left;padding:.55rem .7rem;border:1px solid var(--color-slate-200);border-radius:.75rem;background:white;font-size:.75rem;font-weight:600}.dark .checklist-related-chip>button:first-child{border-color:var(--color-slate-700);background:var(--color-slate-900)}.checklist-related-chip>button:last-child{display:grid;place-items:center;width:2rem;height:2rem;border-radius:.6rem;color:var(--color-slate-500)}.checklist-related-empty{padding:.8rem;border-radius:.75rem;background:rgb(148 163 184/.08);font-size:.75rem;color:var(--color-slate-500)}
+.record-link-dialog{width:min(46rem,calc(100vw - 1rem));max-height:min(46rem,calc(100dvh - 1rem));overflow:hidden}.record-link-dialog__body{padding:1rem;max-height:60dvh;overflow:auto}.record-link-module-tabs{display:flex;flex-wrap:wrap;gap:.4rem}.record-link-module-tabs button{padding:.5rem .7rem;border:1px solid var(--color-slate-200);border-radius:.75rem;font-size:.72rem;font-weight:600}.record-link-module-tabs button.is-active{border-color:var(--color-brand-500);background:var(--color-brand-50);color:var(--color-brand-700)}.dark .record-link-module-tabs button{border-color:var(--color-slate-700)}.record-link-search{margin:.8rem 0}.record-link-search input{width:100%;height:2.65rem;border:1px solid var(--color-slate-200);border-radius:.8rem;padding:0 .8rem}.dark .record-link-search input{border-color:var(--color-slate-700);background:var(--color-slate-950)}.record-link-records{display:grid;gap:.45rem}.record-link-record{display:flex;gap:.65rem;align-items:center;padding:.7rem;border:1px solid var(--color-slate-200);border-radius:.8rem;cursor:pointer}.dark .record-link-record{border-color:var(--color-slate-700)}.record-link-record span{min-width:0;display:flex;flex-direction:column}.record-link-record strong{font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.record-link-record small{font-size:.65rem;color:var(--color-slate-500)}.record-link-count{margin-top:.65rem;font-size:.7rem;font-weight:600;color:var(--color-slate-500)}
+.detail-related-links{margin-top:1rem;border-top:1px solid var(--color-slate-200);padding-top:1rem}.dark .detail-related-links{border-color:var(--color-slate-800)}.detail-related-group{margin-top:.7rem}.detail-related-group button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.7rem .8rem;border:1px solid var(--color-slate-200);border-radius:.8rem;margin:.35rem 0;text-align:left;font-size:.78rem;font-weight:600}.dark .detail-related-group button{border-color:var(--color-slate-700)}
+.reference-group-control{display:inline-flex;height:2.5rem;align-items:center;gap:.4rem;border:1px solid var(--color-slate-200);border-radius:.75rem;padding:0 .55rem;background:white;font-size:.75rem;font-weight:600}.reference-group-control select{max-width:10rem;outline:none}.dark .reference-group-control{border-color:var(--color-slate-700);background:var(--color-slate-900)}.reference-grouped-list{display:grid;gap:1rem;padding:.75rem}.reference-group-section{overflow:hidden;border:1px solid var(--color-slate-200);border-radius:1rem}.dark .reference-group-section{border-color:var(--color-slate-800)}.reference-group-section__head{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--color-slate-50);font-size:.75rem;font-weight:700}.dark .reference-group-section__head{background:rgb(2 6 23/.4)}.reference-group-section__head b{font-size:.65rem;color:var(--color-slate-500)}
+.survey-reference-title{font-size:.75rem;line-height:1.25}.survey-reference-score{display:flex;align-items:baseline;gap:.5rem;margin-top:1rem}.survey-reference-score strong{font-size:1.4rem}.survey-reference-score span{font-size:.7rem;color:var(--color-slate-500)}.survey-evaluation-breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;margin-top:.65rem}.survey-evaluation-breakdown span{padding:.6rem;border-radius:.7rem;background:var(--color-slate-50);font-size:.68rem}.dark .survey-evaluation-breakdown span{background:rgb(2 6 23/.4)}.survey-evaluation-breakdown b{display:block;margin-top:.2rem}
+.vendor-suggestion-source{margin-top:.8rem}.vendor-suggestion-source__title{display:flex;align-items:center;gap:.35rem}
+.dashboard-survey-list{display:grid;border-top:1px solid var(--color-slate-100)}.dark .dashboard-survey-list{border-color:var(--color-slate-800)}.dashboard-survey-list>button{display:grid;grid-template-columns:4.5rem minmax(0,1fr) auto;align-items:center;gap:.65rem;width:100%;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--color-slate-100)}.dark .dashboard-survey-list>button{border-color:var(--color-slate-800)}.dashboard-survey-date{font-size:.65rem;font-weight:700;color:var(--color-slate-500)}.dashboard-survey-copy{min-width:0}.dashboard-survey-copy strong,.dashboard-survey-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dashboard-survey-copy strong{font-size:.75rem}.dashboard-survey-copy small{margin-top:.15rem;font-size:.65rem;color:var(--color-slate-500)}.dashboard-overdue-badge{display:inline-flex;border-radius:999px;padding:.3rem .55rem;background:var(--color-rose-50);color:var(--color-rose-700);font-size:.65rem;font-weight:700}
+@media(max-width:640px){.checklist-related-panel__head{flex-direction:column}.checklist-related-panel__head button{width:100%}.record-link-module-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.reference-group-control{width:100%;justify-content:space-between}.reference-group-control select{max-width:none;flex:1}.survey-evaluation-breakdown{grid-template-columns:1fr}.dashboard-survey-list>button{grid-template-columns:4rem minmax(0,1fr)}.dashboard-survey-list>button>span:last-child{grid-column:2}}
+
+/* WeddingOS v12.3.1 — core-aligned survey detail cards, inline evaluation action */
+.reference-survey-status-cell{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
+.reference-inline-evaluate{display:inline-flex;min-height:2rem;align-items:center;justify-content:center;gap:.35rem;border:1px solid var(--color-brand-200);border-radius:.65rem;background:var(--color-brand-50);padding:.35rem .6rem;color:var(--color-brand-700);font-size:.68rem;font-weight:750;line-height:1;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.reference-inline-evaluate:hover{border-color:var(--color-brand-300);background:color-mix(in srgb,var(--color-brand-50) 70%,white);transform:translateY(-1px)}
+.dark .reference-inline-evaluate{border-color:rgb(201 76 104 / .35);background:rgb(201 76 104 / .1);color:var(--color-brand-300)}
+.survey-insight-card{margin-top:1rem;overflow:hidden;border:1px solid var(--color-slate-200);border-radius:1rem;background:var(--color-white)}
+.dark .survey-insight-card{border-color:var(--color-slate-800);background:var(--color-slate-900)}
+.survey-insight-head{display:flex;align-items:flex-start;gap:.7rem;border-bottom:1px solid var(--color-slate-200);background:var(--color-slate-50);padding:.8rem .9rem}
+.dark .survey-insight-head{border-color:var(--color-slate-800);background:rgb(2 6 23 / .4)}
+.survey-insight-head__icon{display:grid;width:2rem;height:2rem;flex:0 0 auto;place-items:center;border-radius:.65rem;background:var(--color-brand-50);color:var(--color-brand-700)}
+.dark .survey-insight-head__icon{background:rgb(201 76 104 / .12);color:var(--color-brand-300)}
+.survey-insight-head p{font-size:.76rem;font-weight:800;color:var(--color-slate-800)}
+.dark .survey-insight-head p{color:var(--color-slate-100)}
+.survey-insight-head div>span{display:block;margin-top:.12rem;font-size:.65rem;line-height:1rem;color:var(--color-slate-500)}
+.survey-insight-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--color-slate-100)}
+.dark .survey-insight-metrics{border-color:var(--color-slate-800)}
+.survey-insight-metrics>div{min-width:0;padding:.8rem .9rem;border-right:1px solid var(--color-slate-100)}
+.survey-insight-metrics>div:last-child{border-right:0}
+.dark .survey-insight-metrics>div{border-color:var(--color-slate-800)}
+.survey-insight-metrics span{display:block;font-size:.6rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em;color:var(--color-slate-400)}
+.survey-insight-metrics strong{display:block;margin-top:.38rem;min-width:0;font-size:.78rem;line-height:1.2rem;color:var(--color-slate-700);overflow-wrap:anywhere}
+.dark .survey-insight-metrics strong{color:var(--color-slate-200)}
+.survey-insight-decision{font-weight:750!important}
+.survey-insight-score{display:grid;grid-template-columns:10rem minmax(0,1fr);align-items:stretch;gap:.75rem;padding:.8rem .9rem;background:rgb(248 250 252 / .55)}
+.dark .survey-insight-score{background:rgb(2 6 23 / .2)}
+.survey-insight-score__main{display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--color-slate-200);padding-right:.8rem}
+.dark .survey-insight-score__main{border-color:var(--color-slate-800)}
+.survey-insight-score__main>span{font-size:.62rem;font-weight:750;text-transform:uppercase;letter-spacing:.04em;color:var(--color-slate-500)}
+.survey-insight-score__main>strong{margin-top:.2rem;font-size:1.45rem;line-height:1.7rem;color:var(--color-slate-900)}
+.dark .survey-insight-score__main>strong{color:var(--color-slate-100)}
+.survey-insight-score__main small{margin-left:.15rem;font-size:.72rem;font-weight:650;color:var(--color-slate-400)}
+.survey-insight-score__breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}
+.survey-insight-score__breakdown>div{display:flex;min-width:0;flex-direction:column;justify-content:center;border:1px solid var(--color-slate-200);border-radius:.7rem;background:var(--color-white);padding:.55rem .65rem}
+.dark .survey-insight-score__breakdown>div{border-color:var(--color-slate-800);background:var(--color-slate-950)}
+.survey-insight-score__breakdown span{font-size:.61rem;line-height:.9rem;color:var(--color-slate-500)}
+.survey-insight-score__breakdown b{margin-top:.15rem;font-size:.75rem;color:var(--color-slate-800)}
+.dark .survey-insight-score__breakdown b{color:var(--color-slate-200)}
+.survey-insight-empty{display:flex;align-items:center;gap:.45rem;padding:.8rem .9rem;background:rgb(148 163 184 / .07);font-size:.7rem;color:var(--color-slate-500)}
+.survey-insight-actions{display:flex;justify-content:flex-end;gap:.5rem;border-top:1px solid var(--color-slate-100);padding:.7rem .9rem}
+.dark .survey-insight-actions{border-color:var(--color-slate-800)}
+.survey-insight-action{display:inline-flex;min-height:2.45rem;align-items:center;justify-content:center;gap:.4rem;border:1px solid var(--color-slate-200);border-radius:.75rem;padding:.5rem .8rem;font-size:.7rem;font-weight:750;color:var(--color-slate-700);transition:background .15s ease,border-color .15s ease}
+.survey-insight-action:hover{border-color:var(--color-slate-300);background:var(--color-slate-50)}
+.survey-insight-action--primary{border-color:var(--color-brand-700);background:var(--color-brand-700);color:white}
+.survey-insight-action--primary:hover{border-color:var(--color-brand-800);background:var(--color-brand-800)}
+.dark .survey-insight-action{border-color:var(--color-slate-700);color:var(--color-slate-200)}
+.survey-insight-source{display:grid;grid-template-columns:2rem minmax(0,1fr) auto;align-items:center;gap:.6rem;width:calc(100% - 1.8rem);margin:.8rem .9rem 0;border:1px solid var(--color-slate-200);border-radius:.8rem;padding:.65rem .75rem;text-align:left;transition:background .15s ease,border-color .15s ease}
+.survey-insight-source:hover{border-color:var(--color-slate-300);background:var(--color-slate-50)}
+.dark .survey-insight-source{border-color:var(--color-slate-800)}
+.dark .survey-insight-source:hover{background:var(--color-slate-800)}
+.survey-insight-source>span:first-child{display:grid;width:2rem;height:2rem;place-items:center;border-radius:.6rem;background:var(--color-slate-100);color:var(--color-slate-600)}
+.dark .survey-insight-source>span:first-child{background:var(--color-slate-800);color:var(--color-slate-300)}
+.survey-insight-source>span:nth-child(2){min-width:0}
+.survey-insight-source small,.survey-insight-source strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.survey-insight-source small{font-size:.58rem;font-weight:750;text-transform:uppercase;letter-spacing:.04em;color:var(--color-slate-400)}
+.survey-insight-source strong{margin-top:.12rem;font-size:.7rem;color:var(--color-slate-700)}
+.dark .survey-insight-source strong{color:var(--color-slate-200)}
+@media(max-width:720px){.survey-insight-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.survey-insight-metrics>div:nth-child(2){border-right:0}.survey-insight-metrics>div:nth-child(-n+2){border-bottom:1px solid var(--color-slate-100)}.dark .survey-insight-metrics>div:nth-child(-n+2){border-color:var(--color-slate-800)}.survey-insight-score{grid-template-columns:1fr}.survey-insight-score__main{border-right:0;border-bottom:1px solid var(--color-slate-200);padding:0 0 .7rem}.dark .survey-insight-score__main{border-color:var(--color-slate-800)}.survey-insight-actions{flex-direction:column}.survey-insight-action{width:100%}}
+@media(max-width:480px){.survey-insight-score__breakdown{grid-template-columns:1fr}.reference-survey-status-cell{align-items:flex-start}.reference-inline-evaluate{min-height:2.2rem}}
+
+/* WeddingOS v12.3.3 — Reference list: split survey status and survey details */
+.data-col--survey-status{min-width:11.5rem;width:13rem;max-width:15rem;white-space:normal}
+.data-col--survey-status .data-cell-content,.data-col--survey-detail .data-cell-content{max-height:none;overflow:visible}
+.data-col--survey-detail{min-width:13.5rem;width:15rem;max-width:17rem;white-space:normal}
+.reference-survey-status-cell{display:flex;min-width:0;align-items:center;gap:.45rem;flex-wrap:wrap}
+.reference-survey-empty,.reference-survey-detail-empty{color:var(--color-slate-400);font-size:.75rem;font-weight:650}
+.reference-survey-detail-cell{display:flex;min-width:0;flex-direction:column;gap:.28rem}
+.reference-survey-detail-cell__line{display:flex;min-width:0;align-items:center;gap:.35rem .7rem;flex-wrap:wrap;color:var(--color-slate-500);font-size:.68rem;line-height:1.05rem}
+.reference-survey-detail-cell__line--result{color:var(--color-slate-600)}
+.reference-survey-detail-cell__item{display:inline-flex;min-width:0;align-items:center;gap:.28rem;white-space:nowrap}
+.reference-survey-detail-cell__item svg{flex:0 0 auto;color:var(--color-slate-400)}
+.reference-survey-detail-cell__item b{font-weight:800;color:var(--color-slate-800)}
+.dark .reference-survey-detail-cell__line{color:var(--color-slate-400)}
+.dark .reference-survey-detail-cell__line--result{color:var(--color-slate-300)}
+.dark .reference-survey-detail-cell__item b{color:var(--color-slate-100)}
+@media(max-width:767px){
+  .reference-survey-status-cell{align-items:flex-start}
+  .reference-survey-detail-cell{gap:.35rem}
+  .reference-survey-detail-cell__line{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .5rem;width:100%}
+  .reference-survey-detail-cell__item{white-space:normal}
+}
+@media(max-width:420px){.reference-survey-detail-cell__line{grid-template-columns:1fr}}
+
+
+/* WeddingOS v12.3.4 — References: full Survey Evaluation Notes column */
+.data-col--survey-evaluation-notes{
+  min-width:22rem;
+  width:28rem;
+  max-width:34rem;
+  white-space:normal;
+  vertical-align:top;
+}
+.data-col--survey-evaluation-notes .data-cell-content{
+  max-height:none;
+  overflow:visible;
+}
+.reference-survey-evaluation-notes{
+  color:var(--color-slate-600);
+  font-size:.75rem;
+  line-height:1.35rem;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.reference-survey-evaluation-notes--empty{
+  color:var(--color-slate-400);
+  font-size:.75rem;
+  font-weight:650;
+}
+.dark .reference-survey-evaluation-notes{color:var(--color-slate-300)}
+@media(max-width:767px){
+  .mobile-card-field:has(.reference-survey-evaluation-notes),
+  .mobile-card-field:has(.reference-survey-evaluation-notes--empty){grid-column:1 / -1}
+  .reference-survey-evaluation-notes{font-size:.75rem;line-height:1.3rem}
 }
