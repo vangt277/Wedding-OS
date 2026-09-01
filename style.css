@@ -4997,3 +4997,60 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .mobile-card-field:has(.reference-survey-evaluation-notes--empty){grid-column:1 / -1}
   .reference-survey-evaluation-notes{font-size:.75rem;line-height:1.3rem}
 }
+
+
+/* WeddingOS v12.3.6 — Reference visibility + survey planner mobile core */
+.reference-row--hidden{background:color-mix(in srgb,var(--color-slate-50) 72%,transparent)}
+.dark .reference-row--hidden{background:rgb(15 23 42/.34)}
+.reference-card--hidden{border-style:dashed;opacity:.88}
+.reference-hidden-badge{display:inline-flex;align-items:center;min-height:1.35rem;margin-left:.45rem;border-radius:999px;background:var(--color-slate-100);padding:0 .45rem;font-size:.6rem;font-weight:750;color:var(--color-slate-500);white-space:nowrap}
+.dark .reference-hidden-badge{background:var(--color-slate-800);color:var(--color-slate-300)}
+.reference-hide-action--mobile{flex:0 0 2.25rem!important;width:2.25rem!important;font-size:0!important}
+.survey-itinerary-title strong{display:block;min-width:11rem;color:var(--color-slate-800);font-size:.74rem;line-height:1.05rem}
+.dark .survey-itinerary-title strong{color:var(--color-slate-100)}
+.survey-map-field{display:grid;grid-template-columns:minmax(9rem,1fr) auto;align-items:center;gap:.4rem;min-width:13rem}
+.survey-map-open{display:inline-flex;min-height:2.4rem;align-items:center;justify-content:center;gap:.3rem;border:1px solid var(--color-slate-200);border-radius:.65rem;padding:0 .6rem;font-size:.68rem;font-weight:750;color:var(--color-brand-700);white-space:nowrap}
+.dark .survey-map-open{border-color:var(--color-slate-700);color:var(--color-brand-300)}
+.survey-map-open.hidden{display:none!important}
+@media(max-width:767px){
+  .reference-group-control{position:relative;width:2.2rem!important;height:2.2rem!important;min-width:2.2rem;justify-content:center!important;gap:0!important;padding:0!important;border-radius:.7rem!important;overflow:hidden}
+  .reference-group-control>span{display:grid;place-items:center;pointer-events:none}
+  .reference-group-control select{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;opacity:0!important;cursor:pointer}
+}
+@media(max-width:640px){
+  .survey-itinerary-table tbody{padding:.65rem;gap:.7rem}
+  .survey-itinerary-table tr{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:.65rem .7rem .7rem;border-radius:1rem}
+  .survey-itinerary-table td{display:block!important;min-width:0;border-bottom:0!important;padding:.48rem .4rem!important}
+  .survey-itinerary-table td::before{display:block;margin-bottom:.28rem;font-size:.59rem;line-height:.82rem;font-weight:800;color:var(--color-slate-400);text-transform:uppercase;letter-spacing:.04em}
+  .survey-itinerary-table .survey-itinerary-sequence{position:absolute;top:.8rem;left:.75rem;width:2rem;padding:0!important}
+  .survey-itinerary-table .survey-itinerary-sequence::before{display:none}
+  .survey-itinerary-table .survey-itinerary-sequence span{display:grid;width:1.75rem;height:1.75rem;place-items:center;border-radius:.55rem;background:var(--color-slate-100);font-size:.68rem;font-weight:800;color:var(--color-slate-600)}
+  .dark .survey-itinerary-table .survey-itinerary-sequence span{background:var(--color-slate-800);color:var(--color-slate-300)}
+  .survey-itinerary-table .survey-itinerary-title{grid-column:1/-1;padding-left:2.7rem!important;min-height:2.6rem}
+  .survey-itinerary-table .survey-itinerary-title::before{display:none}
+  .survey-itinerary-table .survey-itinerary-title strong{min-width:0;font-size:.875rem;line-height:1.25rem;font-weight:750}
+  .survey-itinerary-table .survey-itinerary-meta{font-size:.75rem;line-height:1.05rem;color:var(--color-slate-600)}
+  .survey-itinerary-table .survey-itinerary-time,.survey-itinerary-table .survey-itinerary-address,.survey-itinerary-table .survey-itinerary-map,.survey-itinerary-table .survey-itinerary-actions-cell{grid-column:1/-1}
+  .survey-itinerary-table .survey-time-control{width:100%;min-width:0;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:.4rem}
+  .survey-itinerary-table .survey-time-control>select{min-height:2.65rem;border-radius:.72rem;padding:.45rem;font-size:.8125rem;line-height:1rem}
+  .survey-itinerary-table input[type="text"],.survey-itinerary-table input[type="url"]{min-height:2.65rem;border-radius:.72rem;padding:.55rem .65rem;font-size:.8125rem;line-height:1.15rem}
+  .survey-map-field{grid-template-columns:1fr;min-width:0;gap:.45rem}
+  .survey-map-open{width:100%;min-height:2.65rem;border-radius:.72rem;font-size:.75rem}
+  .survey-itinerary-table .survey-itinerary-actions{display:flex;justify-content:flex-end;gap:.45rem;padding-top:.1rem}
+  .survey-itinerary-table .survey-itinerary-actions button{width:2.65rem;height:2.65rem;border-radius:.72rem}
+}
+
+/* WeddingOS v12.3.6 QA polish — active group state + compact map editor */
+.reference-group-control.is-active{border-color:var(--color-brand-500);background:var(--color-brand-50);color:var(--color-brand-700)}
+.dark .reference-group-control.is-active{background:rgb(142 38 63/.16);color:var(--color-brand-300)}
+.survey-map-field__actions{display:flex;align-items:center;gap:.35rem}
+.survey-map-edit{display:inline-flex;min-height:2.4rem;align-items:center;justify-content:center;gap:.3rem;border:1px solid var(--color-slate-200);border-radius:.65rem;padding:0 .55rem;font-size:.68rem;font-weight:750;color:var(--color-slate-600);white-space:nowrap}
+.dark .survey-map-edit{border-color:var(--color-slate-700);color:var(--color-slate-300)}
+.survey-map-edit.hidden{display:none!important}
+@media(max-width:640px){
+  .survey-map-field.has-map:not(.is-editing)>input[data-survey-candidate-map]{display:none}
+  .survey-map-field__actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.45rem;width:100%}
+  .survey-map-field:not(.has-map) .survey-map-field__actions{display:none}
+  .survey-map-field.is-editing .survey-map-field__actions{margin-top:.05rem}
+  .survey-map-edit{min-height:2.65rem;border-radius:.72rem;padding:0 .7rem;font-size:.75rem}
+}
