@@ -5054,3 +5054,7 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .survey-map-field.is-editing .survey-map-field__actions{margin-top:.05rem}
   .survey-map-edit{min-height:2.65rem;border-radius:.72rem;padding:0 .7rem;font-size:.75rem}
 }
+
+/* v12.3.7 — Drive-first attachment staging */
+.attachment-row--staged { border-color:var(--color-amber-300); background:var(--color-amber-50); }
+.dark .attachment-row--staged { border-color:rgb(217 119 6 / .45); background:rgb(245 158 11 / .08); }
