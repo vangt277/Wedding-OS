@@ -899,8 +899,10 @@ function recomputeDerivedFinancials(data=DATA){
     row.remaining=row.budgeted-row.committed;
     row.variance=row.budgeted-row.actual;
   });
+  const budgetById=new Map();
+  (data.budget||[]).forEach(item=>{const key=String(item.id);if(!budgetById.has(key))budgetById.set(key,item);});
   (data.checklist||[]).forEach(row=>{
-    const budget=(data.budget||[]).find(item=>String(item.id)===String(row.budget_item_id||''));
+    const budget=budgetById.get(String(row.budget_item_id||''));
     row.budgetEstimate=budget?Number(budget.budgeted||0):0;
     row.committedCost=budget?Number(budget.committed||0):0;
     row.actualCost=budget?Number(budget.actual||0):0;

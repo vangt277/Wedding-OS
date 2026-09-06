@@ -2487,8 +2487,6 @@ PROJECT DEPENDENCIES:
   }
 }
 
-  
-    /* WeddingOS v9: khóa toàn bộ dữ liệu trước khi xác thực */
     body.auth-locked { overflow: hidden; }
     body.auth-locked #sidebarOverlay,
     body.auth-locked #sidebar,
@@ -2508,7 +2506,6 @@ PROJECT DEPENDENCIES:
     .remember-login-row:hover { background:#fff; }
     .dark .remember-login-row:hover { background:rgba(15,23,42,.72); }
     .remember-login-row input { margin-top:.15rem; width:1rem; height:1rem; accent-color:var(--color-brand-600); }
-
 
     * { box-sizing: border-box; }
     html { -webkit-tap-highlight-color: transparent; color-scheme: light; }
@@ -2538,8 +2535,7 @@ PROJECT DEPENDENCIES:
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
-  
-    /* Compact, balanced statistic widget layout */
+
     .widget-grid {
       display: grid;
       align-items: stretch;
@@ -2651,7 +2647,6 @@ PROJECT DEPENDENCIES:
       .widget-stat-card__hint span { display: none; }
     }
 
-    /* Event countdown bars become brighter and fuller as the deadline approaches. */
     .event-progress-card {
       position: relative;
       overflow: hidden;
@@ -2689,8 +2684,6 @@ PROJECT DEPENDENCIES:
     @media (min-width: 640px) { .event-progress-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (min-width: 1100px) { .event-progress-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
-
-    /* WeddingOS v9: notifications, protected settings and account management */
     .notification-button { position: relative; }
     .notification-badge {
       position: absolute; top: -0.35rem; right: -0.35rem; min-width: 1.15rem; height: 1.15rem;
@@ -2786,7 +2779,6 @@ PROJECT DEPENDENCIES:
     .rating-picker input:checked + span { border-color: var(--color-brand-500); background: var(--color-brand-50); color: var(--color-brand-700); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand-500) 12%, transparent); }
     .dark .rating-picker input:checked + span { background: color-mix(in srgb, var(--color-brand-500) 12%, transparent); color: var(--color-brand-300); }
 
-    /* Small compatibility layer for utilities introduced after Tailwind was compiled. */
     .bg-slate-50\/70 { background-color: rgba(248,250,252,.7); }
     .dark .dark\:bg-slate-950\/35 { background-color: rgba(2,6,23,.35); }
     .border-dashed { border-style: dashed; }
@@ -2819,7 +2811,6 @@ PROJECT DEPENDENCIES:
     .hover\:border-brand-400:hover { border-color: var(--color-brand-400); }
     @media (min-width: 640px) { .sm\:flex-wrap { flex-wrap: wrap; } }
 
-    /* Search/filter dialog inspired by a compact enterprise form. */
     .filter-dialog-shell { width: min(44rem, calc(100vw - 1rem)); }
     .filter-dialog-body { overscroll-behavior: contain; }
     .filter-form-section { display: grid; gap: .75rem; }
@@ -2871,8 +2862,6 @@ PROJECT DEPENDENCIES:
     .mr-1 { margin-right: .25rem; }
     .mt-0\.5 { margin-top: .125rem; }
 
-  
-    /* WeddingOS v9: account profile, per-user appearance and column preferences */
     .profile-dialog-shell { width: min(27rem, calc(100vw - 1rem)); max-height: calc(100vh - 1rem); overflow: hidden; }
     .column-dialog-shell { width: min(38rem, calc(100vw - 1rem)); height: min(46rem, calc(100dvh - 1rem)); max-height: calc(100dvh - 1rem); overflow: hidden; }
     .column-dialog-shell #columnSettingsForm { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%; min-height: 0; overflow: hidden; }
@@ -2902,7 +2891,6 @@ PROJECT DEPENDENCIES:
     .dark .column-move-button:hover { background:#1e293b; color:#fff; }
     .settings-appearance-grid .appearance-choice { min-height:2.5rem; }
 
-/* WeddingOS v9.2.1 — Navigation render hotfix / Fast Auth / async hydration / data-table core */
 .hydration-status {
   display:inline-flex;
   align-items:center;
@@ -2977,7 +2965,6 @@ PROJECT DEPENDENCIES:
 .hydration-error-icon { display:grid; place-items:center; width:3.25rem; height:3.25rem; border-radius:1rem; background:#fff7ed; color:#c2410c; }
 .dark .hydration-error-icon { background:rgb(249 115 22 / .12); color:#fdba74; }
 
-/* Data-table sizing: long text wraps only after an ergonomic reading width; numeric/date/actions stay compact. */
 .data-table { table-layout:auto; }
 .data-table th.data-col,
 .data-table td.data-col { vertical-align:top; }
@@ -3018,8 +3005,6 @@ PROJECT DEPENDENCIES:
 .data-table button:disabled,
 article button:disabled { cursor:not-allowed; opacity:.4; transform:none !important; }
 
-
-/* WeddingOS v9.3.2 — Adaptive detail popup only. Create/Edit and other dialogs intentionally unchanged. */
 .detail-popup-shell {
   width: min(52.5rem, calc(100vw - 2rem));
   height: min(46rem, calc(100dvh - 2rem));
@@ -3088,7 +3073,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .detail-field--span-12 { grid-column: span 12; }
 .detail-field--span-12 dd { max-inline-size: 72ch; }
 
-/* Fallback desktop layout when container queries are unavailable: max 3 columns. */
 @media (min-width: 768px) {
   .detail-popup-shell { width: min(52.5rem, calc(100vw - 3rem)); }
   .detail-field--span-3,
@@ -3097,7 +3081,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .detail-field--span-12 { grid-column: span 12; }
 }
 
-/* Adaptive packing by the actual popup body width, not only viewport width. */
 @container detail-body (min-width: 520px) {
   .detail-field--span-3,
   .detail-field--span-4,
@@ -3141,7 +3124,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .detail-field--span-12 dd { max-inline-size: none; }
 }
 
-/* WeddingOS v9.3.3 — Detail packing + compact sticky shell/table headers. */
 @media (min-width: 768px) {
   .detail-field--span-3 { grid-column: span 3; }
   .detail-field--span-4 { grid-column: span 4; }
@@ -3162,7 +3144,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   align-self: stretch;
 }
 
-/* Main page header: remain sticky, but use less vertical space. */
 .app-shell-header {
   position: sticky;
   top: 0;
@@ -3193,7 +3174,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   height: 2.25rem;
 }
 
-/* Desktop data table: one scroll surface with a sticky header row. */
 .collection-table-scroll {
   max-height: min(62dvh, 46rem);
   overflow: auto;
@@ -3232,7 +3212,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .detail-field--span-12 { grid-column: span 12; }
 }
 
-/* WeddingOS v9.4.1 — Feature navigation, compact collection widgets and Drive attachments. */
 .nav-feature-icon {
   display: grid;
   width: 2.25rem;
@@ -3264,7 +3243,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .nav-feature-icon--slate { background:#1e293b; color:#cbd5e1; }
 .nav-mobile-icon { display:grid; place-items:center; width:1.75rem; height:1.75rem; border-radius:.6rem; }
 
-/* KPI cards: the whole card is the action; no dedicated “Xem chi tiết” footer row. */
 .widget-grid.widget-grid--status,
 .widget-grid.widget-grid--budget,
 .widget-grid.widget-grid--guests {
@@ -3300,7 +3278,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .collection-panel-toolbar { min-height:4.25rem; padding-top:.7rem; padding-bottom:.7rem; }
 }
 
-/* Generic attachment component used by Create/Edit/Report and Detail view. */
 .attachment-editor-section {
   border:1px solid var(--color-slate-200);
   border-radius:1rem;
@@ -3344,7 +3321,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .attachment-action { margin-left:2.65rem; }
 }
 
-/* v9.4.1 — single-row statistics + truly compact collection toolbar */
 .widget-grid.widget-grid--single-row {
   display:grid;
   grid-template-columns:repeat(var(--widget-count, 1), minmax(0, 1fr));
@@ -3401,7 +3377,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
     scroll-snap-align:start;
   }
 }
-
 
 .collection-panel-toolbar {
   display:grid;
@@ -3478,11 +3453,9 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .collection-toolbar-add { height:2.5rem; font-size:.78rem; }
 }
 
-/* Stable attachment redraw: keep editor shell intact while only attachment content updates. */
 .attachment-editor-section { contain:layout paint; }
 .detail-attachment-link { width:100%; text-align:left; font:inherit; color:inherit; }
 
-/* WeddingOS v9.5.0 — Mobile core navigation, safe dialogs and icon-only list toolbar */
 .mobile-core-nav {
   display:flex;
   min-width:0;
@@ -3506,10 +3479,9 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .mobile-core-nav.is-active { background:rgb(201 76 104 / .12); color:var(--color-brand-300); }
 
 @media (max-width:767px) {
-  /* Account is a bottom-nav action on mobile; keep header space for alerts/menu. */
+
   .app-shell-header #profileButton { display:none !important; }
 
-  /* Dynamic viewport + safe-area prevents iOS Safari chrome from clipping editor header/footer. */
   .editor-dialog-shell {
     position:fixed;
     inset:auto .25rem max(.25rem, env(safe-area-inset-bottom));
@@ -3525,7 +3497,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .editor-dialog-shell form > :first-child { flex:0 0 auto; }
   .editor-dialog-shell form > :last-child { flex:0 0 auto; padding-bottom:max(1rem, env(safe-area-inset-bottom)); }
 
-  /* Table name and all list actions share one compact row. */
   .collection-panel-toolbar {
     display:grid;
     grid-template-columns:minmax(0,1fr) auto;
@@ -3570,7 +3541,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   #mobileNav { padding-bottom:max(.5rem, env(safe-area-inset-bottom)); }
 }
 
-/* WeddingOS v9.6.1 — Streamlined sectioned forms */
 .editor-form-sections {
   display:flex;
   flex-direction:column;
@@ -3636,9 +3606,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   }
 }
 
-
-
-/* WeddingOS v9.6.2 — exact form row layouts + checkbox multiselect */
 .editor-form-section__rows { display:flex; flex-direction:column; gap:.9rem; }
 .editor-form-row {
   display:grid;
@@ -3676,8 +3643,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .editor-form-row { grid-template-columns:minmax(0,1fr); gap:.85rem; }
 }
 
-
-/* WeddingOS v10.0.0 — Sync V2 conflict resolution */
 .sync-conflict-dialog{width:min(42rem,calc(100vw - 2rem));max-width:42rem;overflow:hidden}
 .sync-conflict-field{border:1px solid var(--color-slate-200);border-radius:1rem;padding:1rem}
 .dark .sync-conflict-field{border-color:var(--color-slate-800)}
@@ -3693,7 +3658,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .sync-conflict-choice small{display:block;margin-top:.2rem;color:var(--color-slate-500);overflow-wrap:anywhere}
 @media(max-width:767px){.sync-conflict-dialog{position:fixed;inset:auto .25rem max(.25rem,env(safe-area-inset-bottom));width:calc(100vw - .5rem);max-width:none;max-height:92dvh;border-radius:1.2rem .1.2rem .8rem .8rem}.sync-conflict-dialog form{max-height:92dvh}}
 
-/* WeddingOS v10 — migration report */
 .migration-report-dialog{width:min(54rem,calc(100vw - 2rem));max-width:54rem;overflow:hidden;}
 .migration-report-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;}
 .migration-report-stat{border:1px solid var(--color-slate-200);border-radius:1rem;padding:.85rem;background:var(--color-slate-50);}
@@ -3702,8 +3666,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .migration-report-issue{border-color:var(--color-slate-800);}
 @media(max-width:767px){.migration-report-dialog{position:fixed;inset:auto .25rem max(.25rem,env(safe-area-inset-bottom));width:calc(100vw - .5rem);max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - .5rem);border-radius:1.25rem 1.25rem .8rem .8rem}.migration-report-summary{grid-template-columns:1fr;}}
 
-
-/* WeddingOS 2026-08-17: login/bootstrap/dialog/date UX refinements */
 .login-panel { text-align: left; }
 .login-brand-mark { margin: 0; }
 .login-panel .remember-login-row { padding-left: 0; padding-right: 0; }
@@ -3762,12 +3724,8 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   flex-direction: column;
 }
 
-
-/* Compact secondary copy in shared lookup rows; deliberately smaller than the main value. */
 .lookup-reference-count { font-size: 9px; line-height: 1.15; font-weight: 500; }
 
-
-/* WeddingOS v10.4 — compact settings/admin cards, 24-hour time controls and dialog density */
 .settings-theme-toggle {
   border: 0 !important;
   box-shadow: none !important;
@@ -3926,7 +3884,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .compact-dialog-header { padding-top:max(.75rem, env(safe-area-inset-top)) !important; }
 }
 
-/* WeddingOS v10.5 — Lookup ordering */
 .lookup-sort-row {
   position: relative;
   transition: background-color .15s ease, box-shadow .15s ease, transform .15s ease;
@@ -3949,12 +3906,8 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .lookup-sort-row { padding-inline: .375rem; }
 }
 
-
-/* WeddingOS v10.6 — Mobile viewport stability + dismissible create sheet */
 @media (max-width: 767px) {
-  /* iOS Safari auto-zooms form controls below 16px. Keep editable controls at
-     16px instead of disabling pinch zoom, so viewport stability and accessibility
-     are both preserved. */
+
   input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
   select,
   textarea,
@@ -3964,7 +3917,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   }
 }
 
-/* WeddingOS v10.7 — Major workflow/schema upgrade UI hardening */
 .sort-dialog-shell {
   width:min(34rem, calc(100vw - 1rem));
   max-height:calc(100dvh - 1rem);
@@ -3976,7 +3928,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   overflow:hidden;
 }
 
-/* Vendor reference suggestions: compact derived content at the end of General info. */
 .vendor-suggestions {
   margin-top:1rem;
   border:1px solid var(--color-slate-200);
@@ -4037,7 +3988,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .vendor-suggestion-action { border-color:var(--color-slate-700); color:var(--color-slate-300); }
 .dark .vendor-suggestion-action:hover { border-color:var(--color-brand-700); background:rgb(201 76 104 / .10); color:var(--color-brand-300); }
 
-/* Timeline group mode: one visual block per related event; group content is never paginated. */
 .timeline-group-list { display:grid; gap:1rem; padding:1rem; }
 .timeline-group {
   min-width:0;
@@ -4072,7 +4022,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 }
 .dark .timeline-group__count { background:rgb(201 76 104 / .12); color:var(--color-brand-300); }
 
-/* Detail popup becomes content-driven on desktop so Budget detail has no large empty footer gap. */
 @media (min-width:768px) {
   .detail-popup-shell {
     height:auto;
@@ -4082,7 +4031,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .detail-popup-body { max-height:calc(100dvh - 11rem); }
 }
 
-/* Mobile advanced search: viewport-safe sheet with independent body scroll and sticky footer. */
 @media (max-width:767px) {
   #filterDialog.filter-dialog-shell {
     inset:max(.25rem, env(safe-area-inset-top)) .25rem max(.25rem, env(safe-area-inset-bottom)) .25rem;
@@ -4144,13 +4092,10 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
     max-height:calc(100dvh - 1rem);
   }
 
-  /* Keep detail content-driven on mobile as well; large records still scroll at 92dvh. */
   .detail-popup-shell { height:auto; max-height:92dvh; }
   .detail-popup-body { max-height:calc(92dvh - 9.5rem); }
 }
 
-
-/* WeddingOS v10.8 / Schema v13 — UX consistency, grouping, guide and financial gates */
 .column-option-row {
   grid-template-columns:minmax(0,1fr) auto !important;
   min-height:3.5rem;
@@ -4235,7 +4180,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .budget-detail-field { border-right:0; }
 }
 
-/* WeddingOS v10.9 — financial UI consistency + mobile sort/card polish */
 .sort-dialog-footer {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -4268,7 +4212,7 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .mobile-card-actions { border-color:var(--color-slate-800); }
 
 @media (max-width:767px) {
-  /* Sorting is a true centered modal on mobile, not an edge-to-edge sheet. */
+
   .sort-dialog-shell {
     width:calc(100vw - 2rem) !important;
     max-width:30rem;
@@ -4298,19 +4242,15 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .sort-dialog-footer__button svg,
   .sort-dialog-footer__button i { width:.9rem; height:.9rem; }
 
-  /* Mobile cards follow the user's selected column order with two equal cells/row. */
   .mobile-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .mobile-card-field--full { grid-column:1 / -1; }
   .mobile-card-value { min-width:0; overflow-wrap:anywhere; }
 
-  /* Budget widgets use M/B abbreviations only on mobile; full VND remains accessible via title/aria-label. */
   .widget-value-desktop { display:none; }
   .widget-value-mobile { display:inline; }
   .widget-grid--budget .widget-stat-card__value { font-size:1.05rem; line-height:1.3rem; white-space:nowrap; }
 }
 
-
-/* WeddingOS v11.0 / Schema v14 — vendor multi service, work suggestions, completion column, attachment preview, filter UX */
 .data-col--complete{width:7.25rem;min-width:7.25rem;text-align:center;vertical-align:middle}
 .mobile-card-title-row{display:flex;align-items:center;gap:.7rem;min-height:2.3rem}
 .mobile-card-title-row .record-title-button{font-weight:700;line-height:1.35rem}
@@ -4378,8 +4318,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .filter-advanced-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
 [data-filter-advanced-content]{margin-top:.75rem}
 
-
-/* v11.0.1: derived suggestions in Detail dialogs */
 .detail-suggestion-block{margin-top:1rem;border:1px solid var(--color-slate-200);border-radius:1rem;background:var(--color-slate-50);padding:.85rem}
 .dark .detail-suggestion-block{border-color:var(--color-slate-800);background:rgb(2 6 23 / .38)}
 .detail-suggestion-block__title{display:flex;align-items:center;gap:.45rem;font-size:.76rem;font-weight:800;color:var(--color-slate-700)}
@@ -4390,8 +4328,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .detail-suggestion-block .checklist-suggestion-groups{margin-top:.65rem}
 @media (max-width:639px){.detail-suggestion-block{padding:.7rem}.detail-suggestion-block__description{font-size:.66rem}}
 
-
-/* WeddingOS v12.0 · Survey module · Core-aligned UI */
 .survey-shell{display:grid;gap:16px}.survey-hero,.survey-panel,.survey-plan-card,.survey-candidate-card,.survey-stat{border:1px solid var(--color-slate-200);background:var(--color-white);box-shadow:0 1px 2px rgba(15,23,42,.05)}
 .survey-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 24px;border-radius:24px}.survey-hero h2{margin-top:4px;font-size:1.25rem;font-weight:700;letter-spacing:-.025em}.survey-hero p{margin-top:6px;font-size:.8125rem;line-height:1.55;color:var(--color-slate-500)}.survey-eyebrow{margin:0!important;font-size:.6875rem!important;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--color-brand-600)!important}
 .survey-primary-action,.survey-secondary-action,.survey-card-actions button,.survey-day-actions button,.survey-detail-actions button{min-height:44px;border-radius:12px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.8125rem;font-weight:700;transition:.15s}.survey-primary-action,.survey-card-actions .is-primary,.survey-day-actions .is-primary{background:var(--color-brand-700);color:#fff}.survey-primary-action:hover,.survey-card-actions .is-primary:hover,.survey-day-actions .is-primary:hover{filter:brightness(1.06)}.survey-secondary-action,.survey-card-actions button,.survey-day-actions button,.survey-detail-actions button{border:1px solid var(--color-slate-200);background:#fff;color:var(--color-slate-700)}
@@ -4412,13 +4348,9 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 @media(max-width:900px){.survey-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.survey-overview-grid,.survey-candidate-grid,.survey-plan-grid{grid-template-columns:1fr}.survey-detail-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.survey-dialog-shell{width:calc(100vw - 24px);max-height:calc(100dvh - 24px)}.survey-dialog-head{padding:14px}.survey-dialog-body{padding:14px;max-height:calc(100dvh - 170px)}.survey-dialog-footer{padding:12px 14px}.survey-shell{gap:12px}.survey-hero{padding:16px;border-radius:18px;align-items:flex-start}.survey-hero h2{font-size:1rem}.survey-hero p{font-size:.72rem}.survey-hero .survey-primary-action{width:44px;min-width:44px;padding:0;font-size:0}.survey-hero .survey-primary-action svg{width:18px;height:18px}.survey-tabs{gap:4px}.survey-tab{flex:1;padding:0 9px;font-size:.7rem}.survey-stat-grid{gap:8px}.survey-stat{padding:11px;gap:8px}.survey-stat>span{width:32px;height:32px}.survey-panel__head{padding:14px}.survey-panel__head--actions{align-items:flex-start;flex-direction:column}.survey-panel__head--actions .survey-primary-action{width:100%}.survey-candidate-grid,.survey-plan-grid{padding:10px;gap:10px}.survey-candidate-card{padding:13px}.survey-card-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.survey-card-actions button{width:100%}.survey-planner-grid{grid-template-columns:1fr}.survey-span-2{grid-column:auto}.survey-participant-grid{grid-template-columns:1fr}.survey-plan-row{grid-template-columns:28px minmax(0,1fr) 76px 44px;gap:7px}.survey-plan-row .survey-drag{display:none}.survey-plan-row>.survey-sequence{grid-column:1}.survey-plan-row>div{grid-column:2}.survey-plan-row>label:nth-of-type(1){grid-column:3}.survey-plan-row>label:nth-of-type(2){grid-column:2/4}.survey-plan-row>button{width:44px;height:44px}.survey-plan-row>button[data-survey-row-up]{grid-column:4;grid-row:1}.survey-plan-row>button[data-survey-row-down]{grid-column:4;grid-row:2}.survey-plan-row>button[data-survey-row-remove]{grid-column:4;grid-row:3}.reference-survey-toggle{align-items:flex-start;flex-direction:column}.reference-survey-options{width:100%}.reference-survey-options label{flex:1}.survey-day-item{grid-template-columns:46px 14px minmax(0,1fr);gap:6px}.survey-day-card{padding:12px}.survey-day-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.survey-day-actions button,.survey-day-actions a{width:100%}.survey-detail-summary{grid-template-columns:1fr 1fr}.survey-history-row{grid-template-columns:85px minmax(0,1fr)}.survey-history-row>:last-child{grid-column:2}.survey-dialog-footer{display:grid;grid-template-columns:1fr 1fr}.survey-dialog-footer>*{width:100%}.survey-create-choices{grid-template-columns:1fr}}
 
-/* WeddingOS v12.1 — Reference / Survey core-standard UI */
-/* Attachment preview: custom preview states are declared after Tailwind .hidden, so explicitly
-   preserve the hidden state to prevent the Drive error layer from overlaying a valid iframe. */
 .attachment-preview-state.hidden,
 .attachment-preview-frame.hidden { display:none !important; }
 
-/* Reference > create/edit */
 .reference-survey-panel {
   grid-column:1 / -1;
   display:grid;
@@ -4450,7 +4382,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .reference-survey-options label:has(input:checked) { border-color:var(--color-brand-500); background:rgb(201 76 104 / .1); color:var(--color-brand-300); }
 .dark .reference-survey-current { border-color:var(--color-slate-700); }
 
-/* Reference / candidate detail widgets — aligned with generic detail cards. */
 .survey-detail-section { margin-top:1rem; border:1px solid var(--color-slate-200); border-radius:1.25rem; background:#fff; overflow:hidden; }
 .survey-detail-title { display:flex; align-items:center; gap:.75rem; border-bottom:1px solid var(--color-slate-200); padding:1rem 1.125rem; background:var(--color-slate-50); }
 .survey-detail-title__icon { display:grid; width:2.25rem; height:2.25rem; flex:0 0 auto; place-items:center; border-radius:.75rem; background:var(--color-brand-50); color:var(--color-brand-700); }
@@ -4471,7 +4402,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .survey-detail-actions button { border-color:var(--color-slate-700); color:var(--color-slate-200); }
 .dark .survey-detail-actions button:hover { background:var(--color-slate-800); }
 
-/* Survey list */
 .survey-plan-group { overflow:hidden; border:1px solid var(--color-slate-200); border-radius:1.25rem; background:#fff; }
 .survey-plan-group__header { min-height:4.25rem; display:flex; align-items:center; gap:1rem; border-bottom:1px solid var(--color-slate-200); padding:.85rem 1rem; background:var(--color-slate-50); }
 .survey-group-actions { display:flex; align-items:center; gap:.25rem; }
@@ -4490,7 +4420,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .survey-visited-toggle span { border-color:var(--color-slate-700); background:var(--color-slate-900); }
 .dark .survey-visited-toggle:has(input:checked) span { border-color:rgb(52 211 153 / .45); background:rgb(16 185 129 / .1); color:var(--color-emerald-300); }
 
-/* Survey planner / detail dialog */
 .survey-dialog-shell { width:min(1180px,calc(100vw - 2rem)); max-height:min(92dvh,980px); overflow:hidden; }
 .survey-dialog-head { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; border-bottom:1px solid var(--color-slate-200); padding:1rem 1.25rem; background:#fff; }
 .survey-dialog-head h3 { margin-top:.2rem; font-size:1rem; line-height:1.4rem; font-weight:750; color:var(--color-slate-900); }
@@ -4519,7 +4448,7 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .survey-field input,.survey-field textarea,.survey-field select { width:100%; min-height:2.75rem; border:1px solid var(--color-slate-200); border-radius:.75rem; background:#fff; padding:.6rem .75rem; font-size:.78rem; line-height:1.15rem; outline:none; transition:border-color .15s ease,box-shadow .15s ease; }
 .survey-field textarea { min-height:6rem; resize:vertical; }
 .survey-field input:focus,.survey-field textarea:focus,.survey-field select:focus { border-color:var(--color-brand-500); box-shadow:0 0 0 3px color-mix(in srgb,var(--color-brand-500) 10%,transparent); }
-/* renderEditorField() used by Participants */
+
 .survey-plan-meta-grid > .editor-form-field { min-width:0; }
 .survey-plan-meta-grid > .editor-form-field > label,.survey-plan-meta-grid > .editor-form-field > span { font-size:.72rem; }
 .survey-widget-table-wrap { width:100%; overflow:auto; border-radius:0 0 1rem 1rem; }
@@ -4575,7 +4504,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .dark .survey-time-option:hover,.dark .survey-itinerary-actions button:hover { background:var(--color-slate-800); color:#fff; }
 .dark .editor-readonly-field { background:var(--color-slate-800) !important; color:var(--color-slate-300) !important; }
 
-/* Guide v12.1 — organized by feature */
 .guide-v12-hero { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(18rem,.9fr); gap:1.25rem; align-items:center; border:1px solid var(--color-slate-200); border-radius:1.5rem; background:#fff; padding:1.4rem; box-shadow:0 1px 2px rgb(15 23 42 / .04); }
 .guide-v12-eyebrow { font-size:.65rem; line-height:.9rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:var(--color-brand-600); }
 .guide-v12-hero h3 { margin-top:.35rem; font-size:1.25rem; line-height:1.7rem; font-weight:800; color:var(--color-slate-900); }
@@ -4642,18 +4570,15 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
   .guide-flow { justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
   .guide-flow span,.guide-flow svg { flex:0 0 auto; }
 }
-/* Survey arrival time uses the same 24-hour hour/minute selection pattern as Timeline. */
+
 .survey-time-control { display:grid; grid-template-columns:minmax(4.15rem,1fr) auto minmax(4.15rem,1fr); align-items:center; gap:.3rem; min-width:9.4rem; }
 .survey-time-control > select { min-width:0; min-height:2.4rem; border:1px solid var(--color-slate-200); border-radius:.65rem; background:#fff; padding:.42rem .45rem; font-size:.68rem; text-align:center; outline:none; }
 .survey-time-control > span { font-size:.75rem; font-weight:800; color:var(--color-slate-400); text-align:center; }
 .survey-time-control > select:focus { border-color:var(--color-brand-500); box-shadow:0 0 0 3px color-mix(in srgb,var(--color-brand-500) 9%,transparent); }
 .dark .survey-time-control > select { border-color:var(--color-slate-700); background:var(--color-slate-950); color:var(--color-slate-100); }
-/* In Survey planner, Participants must share one row with Survey date even though the
-   reusable multi-select is normally a full-width editor field. */
+
 .survey-plan-meta-grid > .editor-form-field--wide { grid-column:auto; }
 
-/* WeddingOS v12.3 — Survey/References/record links polish and core table density */
-/* Icon action tooltips: desktop hover/focus only; mobile keeps the compact visual actions. */
 .action-tooltip { position:relative; }
 .action-tooltip[data-tooltip]::after {
   content:attr(data-tooltip);
@@ -4716,7 +4641,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .survey-delete-action { color:var(--color-rose-600) !important; }
 .survey-group-actions button:disabled { cursor:not-allowed; opacity:.38; }
 
-/* Grouped Survey header: title/status on line 1, date/participants/actions on line 2. */
 .survey-group-copy { min-width:0; width:100%; }
 .survey-group-title-line,.survey-group-meta-line { display:flex; min-width:0; align-items:center; justify-content:space-between; gap:.75rem; }
 .survey-group-title-line > p { min-width:0; flex:1 1 auto; }
@@ -4725,7 +4649,6 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .survey-group-meta { min-width:0; flex:1 1 auto; overflow:hidden; color:var(--color-slate-500); font-size:.6875rem; line-height:1rem; text-overflow:ellipsis; white-space:nowrap; }
 .survey-group-actions { flex:0 0 auto; }
 
-/* Survey dialog uses a fixed shell grid so footer actions can never be clipped. */
 .survey-dialog-shell[open] {
   display:grid;
   grid-template-rows:auto minmax(0,1fr) auto;
@@ -4757,13 +4680,11 @@ article button:disabled { cursor:not-allowed; opacity:.4; transform:none !import
 .survey-danger-action:disabled { cursor:not-allowed; opacity:.4; }
 .dark .survey-danger-action { border-color:var(--color-rose-900); color:var(--color-rose-300); }
 
-/* Notes + attachments obey the same card content width as every other Survey section. */
 .survey-notes-files-body { min-width:0; padding:1rem; }
 .survey-notes-files-body .survey-field,.survey-notes-files-body textarea { min-width:0; max-width:100%; box-sizing:border-box; }
 .survey-notes-files-body .survey-planner-attachments { padding:1rem 0 0; }
 .attachment-dropzone--button { width:100%; text-align:left; }
 
-/* Survey plan detail. */
 .survey-detail-status { display:flex; min-height:1.9rem; align-items:center; margin-top:.35rem; }
 .survey-detail-status > span { display:inline-flex; align-items:center; }
 .survey-status-compact > span {
@@ -4781,7 +4702,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
 .survey-place-link--button { width:100%; }
 .dark .survey-place-link strong { color:var(--color-slate-100); }
 
-/* Candidate history: each datum is an independent field instead of concatenated strings. */
 .survey-history-list { display:grid; gap:.75rem; border-top:1px solid var(--color-slate-200); padding:1rem 1.125rem; }
 .survey-history-card { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.6rem; border:1px solid var(--color-slate-200); border-radius:1rem; background:var(--color-slate-50); padding:.75rem; }
 .survey-history-field { min-width:0; border-radius:.75rem; background:#fff; padding:.65rem .75rem; }
@@ -4792,13 +4712,11 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
 .dark .survey-history-field { background:var(--color-slate-900); }
 .dark .survey-history-field > strong { color:var(--color-slate-100); }
 
-/* Reference detail dialog stays content-driven on desktop, without empty body space. */
 @media (min-width:768px) {
   #detailDialog.detail-popup-shell--compact[open] { height:auto; grid-template-rows:auto auto auto; }
   #detailDialog.detail-popup-shell--compact .detail-popup-body { min-height:0; max-height:calc(100dvh - 11rem); overflow-y:auto; }
 }
 
-/* Notification Center — unread persists until explicit confirmation; read history displays 20 newest. */
 .notification-tabs { position:sticky; top:0; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:.35rem; border-bottom:1px solid var(--color-slate-200); background:#fff; padding:.65rem .8rem; }
 .notification-tab { display:inline-flex; min-height:2.35rem; align-items:center; justify-content:center; gap:.4rem; border-radius:.7rem; color:var(--color-slate-500); font-size:.72rem; font-weight:750; }
 .notification-tab span { display:inline-grid; min-width:1.2rem; min-height:1.2rem; place-items:center; border-radius:999px; background:var(--color-slate-100); padding:0 .3rem; font-size:.6rem; }
@@ -4812,7 +4730,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
 .dark .notification-tab.is-active { background:rgb(201 76 104 / .1); color:var(--color-brand-300); }
 .dark .notification-tab.is-active span { background:var(--color-slate-950); color:var(--color-brand-300); }
 
-/* Core data table line-length: compact scalar columns, readable prose width, max three visible lines. */
 .data-col--text { min-width:11.25rem; width:13rem; max-width:15rem; white-space:normal; overflow-wrap:break-word; word-break:normal; }
 .data-col--long { min-width:17.5rem; width:19rem; max-width:20rem; white-space:normal; overflow-wrap:break-word; word-break:normal; }
 .data-col--text .data-cell-content,.data-col--long .data-cell-content { max-height:4.05rem; overflow:hidden; line-height:1.35rem; overflow-wrap:break-word; word-break:normal; }
@@ -4841,7 +4758,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .survey-dialog-footer .survey-danger-action:nth-last-child(3) { grid-column:1 / -1; }
   .survey-notes-files-body { padding:.8rem; }
 
-  /* The itinerary becomes a form-card list rather than a desktop table squeezed into mobile. */
   .survey-itinerary-table { display:block; min-width:0; width:100%; }
   .survey-itinerary-table thead { display:none; }
   .survey-itinerary-table tbody { display:grid; gap:.7rem; padding:.7rem; }
@@ -4867,8 +4783,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .survey-mobile-action { min-height:2.4rem; padding-inline:.3rem; font-size:.58rem; }
 }
 
-
-/* WeddingOS v12.3 — related records, reference grouping, survey evaluation and dashboard refinements */
 .checklist-start-status-note{margin-top:.4rem;font-size:10px;line-height:1.35;color:var(--color-emerald-700)}
 .dark .checklist-start-status-note{color:var(--color-emerald-300)}
 .reference-rating-hidden [data-editor-field="rating"]{display:none!important}
@@ -4883,7 +4797,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
 .dashboard-survey-list{display:grid;border-top:1px solid var(--color-slate-100)}.dark .dashboard-survey-list{border-color:var(--color-slate-800)}.dashboard-survey-list>button{display:grid;grid-template-columns:4.5rem minmax(0,1fr) auto;align-items:center;gap:.65rem;width:100%;padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--color-slate-100)}.dark .dashboard-survey-list>button{border-color:var(--color-slate-800)}.dashboard-survey-date{font-size:.65rem;font-weight:700;color:var(--color-slate-500)}.dashboard-survey-copy{min-width:0}.dashboard-survey-copy strong,.dashboard-survey-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dashboard-survey-copy strong{font-size:.75rem}.dashboard-survey-copy small{margin-top:.15rem;font-size:.65rem;color:var(--color-slate-500)}.dashboard-overdue-badge{display:inline-flex;border-radius:999px;padding:.3rem .55rem;background:var(--color-rose-50);color:var(--color-rose-700);font-size:.65rem;font-weight:700}
 @media(max-width:640px){.checklist-related-panel__head{flex-direction:column}.checklist-related-panel__head button{width:100%}.record-link-module-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.reference-group-control{width:100%;justify-content:space-between}.reference-group-control select{max-width:none;flex:1}.survey-evaluation-breakdown{grid-template-columns:1fr}.dashboard-survey-list>button{grid-template-columns:4rem minmax(0,1fr)}.dashboard-survey-list>button>span:last-child{grid-column:2}}
 
-/* WeddingOS v12.3.1 — core-aligned survey detail cards, inline evaluation action */
 .reference-survey-status-cell{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
 .reference-inline-evaluate{display:inline-flex;min-height:2rem;align-items:center;justify-content:center;gap:.35rem;border:1px solid var(--color-brand-200);border-radius:.65rem;background:var(--color-brand-50);padding:.35rem .6rem;color:var(--color-brand-700);font-size:.68rem;font-weight:750;line-height:1;transition:background .15s ease,border-color .15s ease,transform .15s ease}
 .reference-inline-evaluate:hover{border-color:var(--color-brand-300);background:color-mix(in srgb,var(--color-brand-50) 70%,white);transform:translateY(-1px)}
@@ -4942,7 +4855,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
 @media(max-width:720px){.survey-insight-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.survey-insight-metrics>div:nth-child(2){border-right:0}.survey-insight-metrics>div:nth-child(-n+2){border-bottom:1px solid var(--color-slate-100)}.dark .survey-insight-metrics>div:nth-child(-n+2){border-color:var(--color-slate-800)}.survey-insight-score{grid-template-columns:1fr}.survey-insight-score__main{border-right:0;border-bottom:1px solid var(--color-slate-200);padding:0 0 .7rem}.dark .survey-insight-score__main{border-color:var(--color-slate-800)}.survey-insight-actions{flex-direction:column}.survey-insight-action{width:100%}}
 @media(max-width:480px){.survey-insight-score__breakdown{grid-template-columns:1fr}.reference-survey-status-cell{align-items:flex-start}.reference-inline-evaluate{min-height:2.2rem}}
 
-/* WeddingOS v12.3.3 — Reference list: split survey status and survey details */
 .data-col--survey-status{min-width:11.5rem;width:13rem;max-width:15rem;white-space:normal}
 .data-col--survey-status .data-cell-content,.data-col--survey-detail .data-cell-content{max-height:none;overflow:visible}
 .data-col--survey-detail{min-width:13.5rem;width:15rem;max-width:17rem;white-space:normal}
@@ -4965,8 +4877,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
 }
 @media(max-width:420px){.reference-survey-detail-cell__line{grid-template-columns:1fr}}
 
-
-/* WeddingOS v12.3.4 — References: full Survey Evaluation Notes column */
 .data-col--survey-evaluation-notes{
   min-width:22rem;
   width:28rem;
@@ -4998,8 +4908,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .reference-survey-evaluation-notes{font-size:.75rem;line-height:1.3rem}
 }
 
-
-/* WeddingOS v12.3.6 — Reference visibility + survey planner mobile core */
 .reference-row--hidden{background:color-mix(in srgb,var(--color-slate-50) 72%,transparent)}
 .dark .reference-row--hidden{background:rgb(15 23 42/.34)}
 .reference-card--hidden{border-style:dashed;opacity:.88}
@@ -5040,7 +4948,6 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .survey-itinerary-table .survey-itinerary-actions button{width:2.65rem;height:2.65rem;border-radius:.72rem}
 }
 
-/* WeddingOS v12.3.6 QA polish — active group state + compact map editor */
 .reference-group-control.is-active{border-color:var(--color-brand-500);background:var(--color-brand-50);color:var(--color-brand-700)}
 .dark .reference-group-control.is-active{background:rgb(142 38 63/.16);color:var(--color-brand-300)}
 .survey-map-field__actions{display:flex;align-items:center;gap:.35rem}
@@ -5055,6 +4962,5 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   .survey-map-edit{min-height:2.65rem;border-radius:.72rem;padding:0 .7rem;font-size:.75rem}
 }
 
-/* v12.3.7 — Drive-first attachment staging */
 .attachment-row--staged { border-color:var(--color-amber-300); background:var(--color-amber-50); }
 .dark .attachment-row--staged { border-color:rgb(217 119 6 / .45); background:rgb(245 158 11 / .08); }
