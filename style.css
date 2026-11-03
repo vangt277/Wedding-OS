@@ -5221,3 +5221,499 @@ a.survey-place-link:hover strong { color:var(--color-brand-700); text-decoration
   #detailDialog .detail-popup-footer { padding: .7rem 1rem max(.85rem, env(safe-area-inset-bottom)) !important; }
   #detailDialog .detail-popup-footer button { min-height: 2.5rem; }
 }
+
+/* =============================================================
+   WeddingOS 12.5 — Shared list UX / sortable controls / dark mode
+   ============================================================= */
+:root { --wos-list-head-bg:#eaf1fb; --wos-list-head-fg:#304968; --wos-list-head-rule:#cbd9eb; }
+.dark { --wos-list-head-bg:#1b2a43; --wos-list-head-fg:#dbe8ff; --wos-list-head-rule:#334a68; }
+
+/* Column headings — stronger visual hierarchy, sticky across groups. */
+.data-table .collection-table-head th,
+.collection-table-head th {
+  background:var(--wos-list-head-bg)!important;
+  color:var(--wos-list-head-fg)!important;
+  border-bottom:2px solid var(--wos-list-head-rule);
+  padding-top:.85rem;padding-bottom:.85rem;
+  font-size:.7rem;letter-spacing:.065em;font-weight:800;
+  text-transform:uppercase;
+  box-shadow:0 2px 8px rgb(15 23 42 / .045);
+}
+.dark .collection-table-head th { box-shadow:0 2px 10px rgb(0 0 0 / .2); }
+.data-table tbody tr:nth-child(even) { background-color:rgb(241 245 249 / .3); }
+.dark .data-table tbody tr:nth-child(even) { background-color:rgb(51 65 85 / .13); }
+.dark .data-table tbody td, .dark .data-table tbody button.record-title-button {color:#dce6f4;}
+.dark .data-table tbody tr:hover {background-color:rgb(71 85 105 / .28)!important;}
+
+/* Group header no longer repeats record count above + below the table. */
+.timeline-group:not(.survey-plan-group) .timeline-group__header {
+  min-height:2.55rem;padding:.48rem .9rem;
+  background:linear-gradient(100deg,#eef4ff,#f9fbff);
+  border-bottom:1px solid #ccdcf0;
+}
+.timeline-group:not(.survey-plan-group) .timeline-group__header p {
+  font-size:.87rem;font-weight:800;color:#203958;
+}
+.dark .timeline-group:not(.survey-plan-group) .timeline-group__header {
+  background:linear-gradient(100deg,#1d3350,#17263d);border-color:#354b67;
+}
+.dark .timeline-group:not(.survey-plan-group) .timeline-group__header p {color:#e4eeff;}
+
+/* Tabs — compact and legible in both color schemes. */
+.management-tabs-panel {margin:.2rem 0 .85rem;gap:.65rem;}
+.management-tabs-bar {gap:.45rem;}
+.management-tabs-bar .management-tab {
+  border:1px solid #d6dfed;border-radius:.7rem;background:#fff;
+  padding:.68rem 1rem;color:#3f5270;font-size:.78rem;font-weight:750;
+  transition:background-color .16s,border-color .16s,color .16s;
+  box-shadow:0 1px 2px rgb(15 23 42 / .035);
+}
+.management-tabs-bar .management-tab:hover {border-color:#90a8d0;background:#edf3ff;color:#204779;}
+.management-tabs-bar .management-tab.is-active {color:#fff;background:var(--color-brand-700);border-color:var(--color-brand-700);box-shadow:0 3px 9px rgb(20 45 100 / .18);}
+.management-tabs-settings {width:2.65rem;height:2.65rem;justify-content:center;flex:none;}
+.dark .management-tabs-bar .management-tab {color:#d4e0f1;background:#1d2b42;border-color:#435671;}
+.dark .management-tabs-bar .management-tab:hover {background:#2c405c;color:#fff;border-color:#7a97c5;}
+.dark .management-tabs-bar .management-tab.is-active {color:#fff;background:#345ad9;border-color:#6584ff;}
+.dark .management-tabs-settings {color:#ebf2ff;border-color:#4b6384;background:#1d2b42;}
+.dark .management-tabs-settings:hover {background:#2b4367;}
+
+/* Shared sorting component, one behavior for tabs and columns. */
+.wos-sortable-row {transition:background-color .14s,border-color .14s,box-shadow .14s;}
+.wos-sortable-row.wos-sort-over {background:#dceafe!important;border-color:#648be7!important;box-shadow:inset 0 0 0 1px #648be7;}
+.wos-sortable-row.wos-sort-dragging {opacity:.52;}
+.wos-drag-handle {display:grid;place-items:center;flex:none;width:2.45rem;height:2.45rem;border-radius:.7rem;color:#55708e;cursor:grab;touch-action:none;user-select:none;}
+.wos-drag-handle:hover,.wos-drag-handle:focus-visible {background:#dfeafe;color:#20499b;outline:2px solid transparent;}
+.wos-drag-handle:active {cursor:grabbing;}
+.dark .wos-sortable-row.wos-sort-over {background:#284b79!important;border-color:#83acff!important;}
+.dark .wos-drag-handle {color:#b6cbe5;}
+.dark .wos-drag-handle:hover,.dark .wos-drag-handle:focus-visible {background:#334c75;color:#fff;}
+.column-option-row {gap:.5rem;}
+.wos-tab-dialog {width:min(34rem,calc(100vw - 2rem));max-height:calc(100dvh - 2rem);border:1px solid #d6e0ed;border-radius:1.1rem;overflow:hidden;background:#fff;color:#162c47;box-shadow:0 28px 75px rgb(15 23 42 / .26);}
+.wos-tab-dialog[open] {display:flex;flex-direction:column;}
+.wos-tab-dialog::backdrop {background:rgb(15 23 42 / .62);backdrop-filter:blur(3px);}
+.wos-tab-dialog form {display:flex;min-height:0;max-height:inherit;flex-direction:column;}
+.wos-tab-dialog header {display:flex;gap:.75rem;align-items:center;padding:1rem 1.2rem;border-bottom:1px solid #e1e9f4;}
+.wos-tab-dialog header .wos-tab-dialog__icon {display:grid;place-items:center;width:2.4rem;height:2.4rem;border-radius:.7rem;background:#eaf1ff;color:#345ad9;flex:none;}
+.wos-tab-dialog header>div {flex:1;min-width:0;}
+.wos-tab-dialog header h3 {font-size:.99rem;font-weight:800;}
+.wos-tab-dialog header p {margin-top:.2rem;font-size:.72rem;color:#677b98;line-height:1.4;}
+.wos-tab-dialog header>button {width:2rem;height:2rem;display:grid;place-items:center;border-radius:.5rem;}
+.wos-tab-dialog__body {overflow-y:auto;min-height:0;padding:1rem 1.15rem;}
+.wos-tab-sort-rows {display:grid;gap:.45rem;}
+.wos-tab-sort-row {display:flex;align-items:center;gap:.7rem;padding:.37rem .55rem .37rem .9rem;border:1px solid #dce5f1;border-radius:.75rem;background:#f8fbff;}
+.wos-tab-sort-row label {display:flex;align-items:center;gap:.65rem;flex:1;min-width:0;font-size:.82rem;font-weight:650;cursor:pointer;}
+.wos-tab-sort-row label span {overflow-wrap:anywhere;}
+.wos-tab-sort-row input {width:1rem;height:1rem;accent-color:#345ad9;flex:none;}
+.wos-tab-dialog__hint {margin-top:.8rem;color:#6b7c93;font-size:.72rem;}
+.wos-tab-dialog footer {display:flex;justify-content:flex-end;gap:.55rem;padding:.85rem 1.2rem;border-top:1px solid #e1e9f4;}
+.wos-tab-dialog footer button {min-height:2.4rem;border:1px solid #d5dfed;border-radius:.65rem;padding:.5rem 1rem;font-size:.78rem;font-weight:750;}
+.wos-tab-dialog footer button[type=submit] {background:#345ad9;color:#fff;border-color:#345ad9;}
+.dark .wos-tab-dialog {background:#15243a;color:#edf3ff;border-color:#425775;}
+.dark .wos-tab-dialog header,.dark .wos-tab-dialog footer {border-color:#344965;}
+.dark .wos-tab-dialog header .wos-tab-dialog__icon {background:#243e66;color:#b7ceff;}
+.dark .wos-tab-dialog header p,.dark .wos-tab-dialog__hint {color:#b0c3dc;}
+.dark .wos-tab-sort-row {background:#1d314d;border-color:#405a7b;}
+.dark .wos-tab-dialog footer button {color:#edf3ff;background:#223956;border-color:#456083;}
+.dark .wos-tab-dialog footer button[type=submit] {background:#4169e8;border-color:#6585ff;}
+
+/* Owner multi-selection — compact chips for tables and adaptive record detail. */
+.wos-owner-list {display:inline-flex;flex-wrap:wrap;align-items:center;gap:.25rem;max-width:100%;}
+.wos-owner-chip {display:inline-flex;align-items:center;gap:.28rem;padding:.24rem .45rem;border:1px solid #c7d7ef;border-radius:.48rem;background:#eaf2ff;color:#285280;font-size:.71rem;font-weight:700;white-space:nowrap;}
+.dark .wos-owner-chip {background:#253e63;border-color:#496899;color:#d5e7ff;}
+
+/* Budget state uses color + readable text + icon, never color alone. */
+.wos-budget-health {display:inline-flex;align-items:center;gap:.32rem;border:1px solid;border-radius:999px;padding:.27rem .57rem;font-size:.69rem;font-weight:800;white-space:nowrap;}
+.wos-budget-health--safe {background:#e9f9ef;border-color:#abdfbe;color:#166534;}
+.wos-budget-health--warning {background:#fff4dc;border-color:#f4cc72;color:#985609;}
+.wos-budget-health--danger {background:#fff0f0;border-color:#f4b4b4;color:#b4232f;}
+.dark .wos-budget-health--safe {background:#113d32;border-color:#2d7c60;color:#b4f1cd;}
+.dark .wos-budget-health--warning {background:#47350e;border-color:#956c21;color:#ffe1a2;}
+.dark .wos-budget-health--danger {background:#4d1d29;border-color:#a75a6a;color:#ffd2db;}
+
+/* Correct invisible select/control text in dark mode (notably Gộp sự kiện liên quan). */
+.dark .reference-group-control,.dark .group-by-control {
+  background:#20334d!important;border-color:#476382!important;color:#eaf3ff!important;
+}
+.dark .reference-group-control select,.dark #groupBySelect {color:#eaf3ff!important;background:#20334d!important;color-scheme:dark;}
+.dark #groupBySelect option {background:#20334d!important;color:#f2f7ff!important;}
+.dark .collection-toolbar-button {background:#20334d;color:#eaf3ff;border-color:#476382;}
+.dark .collection-toolbar-button:hover {background:#2a466a;color:#fff;}
+.dark .collection-toolbar-button--active {background:#33487a!important;border-color:#87aaff!important;color:#fff!important;}
+.dark .collection-panel-toolbar {background:#1a2b45;border-color:#344c6d;}
+.dark .mobile-data-card {background:#1a2b43;border-color:#3a506e;}
+.dark #columnSettingsList .column-option-row {background:#1a2f4a;color:#e4edfa;border-color:#415a7b;}
+.dark .data-table .tabular,.dark .data-table .tabular-nums {color:inherit;}
+@media(prefers-reduced-motion:reduce) {.wos-sortable-row,.management-tab {transition:none!important;}}
+
+
+/* WeddingOS v12.5.1 — Unified responsive form + compact list action core.
+   Cosmetic-only: does not modify record payloads or Google Sheets schema. */
+:root {
+  --wos-action-blue:#315bd8;
+  --wos-action-ink:#284677;
+  --wos-head-blue:#e8f0ff;
+  --wos-head-line:#c4d6f7;
+}
+.dark {
+  --wos-action-blue:#7a9bff;
+  --wos-action-ink:#e2ebff;
+  --wos-head-blue:#233b60;
+  --wos-head-line:#486991;
+}
+/* Two predictable equal-width columns. Explicit section rows may still have three fields. */
+#editorDialog .editor-form-section__grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1.1rem;align-items:start;}
+#editorDialog .editor-form-row {gap:.9rem 1.1rem;align-items:start;}
+#editorDialog .editor-form-section__rows {gap:.9rem;}
+#editorDialog .editor-form-field {display:flex;flex-direction:column;min-width:0;width:100%;align-self:start;}
+#editorDialog .editor-form-field > span:first-child {display:flex;align-items:center;min-height:1.45rem;margin-bottom:.45rem;line-height:1.45rem;}
+#editorDialog .editor-form-field :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea) {min-width:0;max-width:100%;}
+#editorDialog .editor-form-field--wide {grid-column:1/-1;}
+#editorDialog .editor-form-section__grid > .editor-form-field:last-child:nth-child(odd):not(.editor-form-field--wide) {grid-column:1/-1;}
+#editorDialog .editor-form-section__grid > .editor-form-field:last-child:nth-child(odd):not(.editor-form-field--wide) > input {max-width:100%;}
+#editorDialog .editor-multi-dropdown {width:100%;}
+#editorDialog .editor-multi-dropdown__button {min-width:0;min-height:2.75rem;}
+@media(max-width:767px){
+  #editorDialog .editor-form-section__grid,
+  #editorDialog .editor-form-row {grid-template-columns:minmax(0,1fr);gap:.8rem;}
+  #editorDialog .editor-form-section__grid > .editor-form-field:last-child:nth-child(odd):not(.editor-form-field--wide) {grid-column:auto;}
+}
+/* Owner values: small blue chips, no redundant person icon. Shared by tables and detail view. */
+.wos-owner-list {display:inline-flex;flex-wrap:wrap;gap:.4rem;align-items:center;max-width:100%;vertical-align:middle;}
+.wos-owner-chip {display:inline-flex;min-height:1.75rem;align-items:center;gap:0;border:1px solid #d6e5ff;border-radius:999px;background:#eef5ff;color:#3155ca;padding:.27rem .68rem;font-size:.78rem;font-weight:750;line-height:1.15;white-space:normal;overflow-wrap:anywhere;}
+.dark .wos-owner-chip {border-color:#4767a3;background:#253f69;color:#d7e6ff;}
+.wos-owner-dropdown .editor-multi-dropdown__summary {display:block;min-height:1.35rem;}
+.wos-owner-dropdown .editor-multi-dropdown__chips {display:none;}
+.wos-owner-dropdown .editor-multi-dropdown__button {min-height:2.75rem;padding:.35rem .65rem;}
+.wos-owner-dropdown .wos-owner-chip {font-size:.73rem;min-height:1.55rem;}
+/* WeddingOS v12.5.2 — compact list toolbar and harmonized grouped/table headers.
+   One shared presentation rule for collection lists and the Survey list. */
+:root {
+  --wos-list-heading-surface:#edf4ff;
+  --wos-list-heading-ink:#223d65;
+  --wos-list-heading-border:#cbdaf2;
+}
+.dark {
+  --wos-list-heading-surface:#203754;
+  --wos-list-heading-ink:#e7f1ff;
+  --wos-list-heading-border:#3c587b;
+}
+.collection-panel-toolbar {
+  min-height:3.35rem;
+  padding:.48rem .85rem;
+  background:#f9fbff;
+  border-color:#dce7f7;
+  gap:.4rem .85rem;
+}
+.dark .collection-panel-toolbar {background:#1a2e4a;border-color:#405d81;}
+.collection-panel-toolbar__heading h3 {
+  color:#203c71;
+  font-size:.95rem;
+  line-height:1.3rem;
+}
+.dark .collection-panel-toolbar__heading h3 {color:#eff5ff;}
+.collection-panel-toolbar__actions {gap:.4rem;}
+.collection-panel-toolbar__actions .collection-toolbar-button,
+.collection-panel-toolbar__actions .reference-group-control {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  width:2.25rem;
+  height:2.25rem;
+  min-width:2.25rem;
+  flex:0 0 2.25rem;
+  padding:0;
+  border:1px solid #ccdaf0;
+  border-radius:.72rem;
+  background:#fff;
+  color:#47618a;
+  box-shadow:0 1px 2px rgb(25 55 108 / .05);
+}
+.collection-panel-toolbar__actions .collection-toolbar-button svg,
+.collection-panel-toolbar__actions .reference-group-control svg {width:1.05rem;height:1.05rem;}
+.collection-panel-toolbar__actions .collection-toolbar-button:hover,
+.collection-panel-toolbar__actions .reference-group-control:hover {border-color:#6b94ec;background:#edf4ff;color:#2259d2;}
+.collection-panel-toolbar__actions .collection-toolbar-button--active,
+.collection-panel-toolbar__actions .group-by-control.is-active {
+  border-color:#4c76f9;
+  box-shadow:inset 0 0 0 1px #4c76f9;
+  background:#ebf3ff;
+  color:#2755d9;
+}
+.collection-panel-toolbar__actions .collection-toolbar-button:focus-visible,
+.collection-panel-toolbar__actions .reference-group-control:focus-within {outline:2px solid #376dff;outline-offset:2px;}
+.collection-panel-toolbar__actions .collection-toolbar-button > span:not(.wos-toolbar-count) {display:none!important;}
+.collection-panel-toolbar__actions .wos-toolbar-count {
+  position:absolute;right:-.35rem;top:-.4rem;
+  min-width:1.05rem;height:1.05rem;display:grid;place-items:center;
+  background:#2853d3;border-radius:99px;color:#fff;
+  padding:0 .2rem;font-size:.6rem;font-weight:800;
+}
+.collection-panel-toolbar__actions .collection-toolbar-add {
+  min-width:max-content;width:auto;height:2.25rem;
+  padding:0 .8rem;gap:.4rem;border-radius:.72rem;
+  background:#2e55db;color:#fff;
+  font-size:.77rem;font-weight:750;white-space:nowrap;
+}
+.collection-panel-toolbar__actions .collection-toolbar-add svg {width:1.05rem;height:1.05rem;}
+.collection-panel-toolbar__actions .collection-toolbar-add > span {display:inline!important;white-space:nowrap;}
+.collection-panel-toolbar__actions .collection-toolbar-add:hover {background:#2147bc;}
+.collection-panel-toolbar__actions .wos-icon-group {overflow:hidden;cursor:pointer;}
+.collection-panel-toolbar__actions .wos-icon-group > span {display:grid;place-items:center;pointer-events:none;}
+.collection-panel-toolbar__actions .wos-icon-group select {
+  position:absolute;inset:0;width:100%;height:100%;opacity:0;
+  cursor:pointer;z-index:1;appearance:none;
+}
+.dark .collection-panel-toolbar__actions .collection-toolbar-button,
+.dark .collection-panel-toolbar__actions .reference-group-control {background:#243b5b;color:#dceaff;border-color:#4e6a92;}
+.dark .collection-panel-toolbar__actions .collection-toolbar-button:hover,
+.dark .collection-panel-toolbar__actions .reference-group-control:hover {background:#34527b;color:#fff;border-color:#8facff;}
+.dark .collection-panel-toolbar__actions .collection-toolbar-button--active,
+.dark .collection-panel-toolbar__actions .group-by-control.is-active {background:#2d477c;color:#fff;border-color:#88a8ff;box-shadow:inset 0 0 0 1px #88a8ff;}
+.dark .collection-panel-toolbar__actions .collection-toolbar-add {background:#345bdf;color:#fff;}
+.dark .collection-panel-toolbar__actions .collection-toolbar-add:hover {background:#456ff0;}
+
+/* Matching solid surface, type scale and borders for group titles and the sticky table column headings. */
+.timeline-group:not(.survey-plan-group) .timeline-group__header {
+  min-height:2.45rem;
+  padding:.5rem .85rem;
+  background:var(--wos-list-heading-surface);
+  border-color:var(--wos-list-heading-border);
+}
+.timeline-group:not(.survey-plan-group) .timeline-group__header p {
+  color:var(--wos-list-heading-ink);
+  font-size:.84rem;
+  font-weight:800;
+  line-height:1.25;
+}
+.dark .timeline-group:not(.survey-plan-group) .timeline-group__header {
+  background:var(--wos-list-heading-surface);
+  border-color:var(--wos-list-heading-border);
+}
+.dark .timeline-group:not(.survey-plan-group) .timeline-group__header p {color:var(--wos-list-heading-ink);}
+.data-table .collection-table-head th,
+.collection-table-head th {
+  background:var(--wos-list-heading-surface)!important;
+  color:var(--wos-list-heading-ink)!important;
+  border-top:0;
+  border-bottom:1px solid var(--wos-list-heading-border);
+  border-radius:0;
+  padding-top:.63rem;
+  padding-bottom:.63rem;
+  font-size:.7rem;
+  font-weight:800;
+  letter-spacing:.045em;
+  line-height:1.25;
+  white-space:nowrap;
+  box-shadow:inset 0 -1px 0 var(--wos-list-heading-border);
+}
+.dark .data-table .collection-table-head th,
+.dark .collection-table-head th {color:var(--wos-list-heading-ink)!important;box-shadow:inset 0 -1px 0 var(--wos-list-heading-border);}
+.data-table .collection-table-head th:first-child,
+.data-table .collection-table-head th:last-child {border-radius:0;}
+/* Compact actions allow a single row on desktop/tablet without squeezing the title. */
+@media (min-width:541px) and (max-width:1100px) {
+  .collection-panel-toolbar {grid-template-columns:minmax(0,1fr) auto;align-items:center;}
+  .collection-panel-toolbar__actions {width:auto;justify-content:flex-end;overflow-x:visible;padding-bottom:0;}
+}
+@media (max-width:540px) {
+  .collection-panel-toolbar {grid-template-columns:minmax(0,1fr);}
+  .collection-panel-toolbar__actions {width:100%;justify-content:flex-start;overflow-x:auto;scrollbar-width:thin;padding-bottom:.08rem;}
+}
+@media (max-width:639px) {
+  .collection-panel-toolbar {padding:.55rem .7rem;}
+  .collection-panel-toolbar__actions .collection-toolbar-button,
+  .collection-panel-toolbar__actions .reference-group-control {
+    width:2.25rem!important;height:2.25rem!important;min-width:2.25rem;flex-basis:2.25rem;
+  }
+  .collection-panel-toolbar__actions .collection-toolbar-add {height:2.25rem;padding:0 .7rem;}
+}
+@media (max-width:375px) {
+  .collection-panel-toolbar__actions {flex-wrap:wrap;overflow:visible;padding-bottom:0;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .collection-panel-toolbar__actions .collection-toolbar-button {transition:none!important;}
+}
+
+
+/* ============================================================
+   WeddingOS v12.5.3 — Adaptive shared list header core
+   - No duplicate collection heading / full-width toolbar strip
+   - Event/status tabs wrap instead of scrolling horizontally
+   - Keep existing action IDs and JS bindings in a compact dock
+   - Desktop and mobile share one responsive layout contract
+   ============================================================ */
+.management-tabs-panel {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:start;
+  gap:.4rem .55rem;
+  min-width:0;
+  margin:.3rem 0 .7rem;
+}
+.management-tabs-bar {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  align-content:flex-start;
+  flex:initial;
+  min-width:0;
+  width:100%;
+  gap:.35rem;
+  padding:0;
+  overflow:visible;
+  scrollbar-width:none;
+  overscroll-behavior:auto;
+}
+.management-tabs-bar .management-tab {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  max-width:min(100%,14rem);
+  min-height:2.15rem;
+  flex:0 1 auto;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-align:center;
+  padding:.38rem .67rem;
+  font-size:.72rem;
+  line-height:1.25;
+  border-radius:.65rem;
+  box-shadow:0 1px 3px rgb(30 64 120 / .045);
+}
+.management-tabs-tools {
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:flex-start;
+  justify-content:flex-end;
+  gap:.35rem;
+  min-width:0;
+}
+.wos-list-action-dock.collection-panel-toolbar__actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex:0 1 auto;
+  width:auto;
+  min-width:0;
+  max-width:100%;
+  gap:.3rem;
+  flex-wrap:wrap;
+  overflow:visible;
+  padding:0;
+}
+.wos-list-action-dock.collection-panel-toolbar__actions .collection-toolbar-button,
+.wos-list-action-dock.collection-panel-toolbar__actions .reference-group-control {
+  width:2.15rem;
+  min-width:2.15rem;
+  height:2.15rem;
+  flex:0 0 2.15rem;
+  border-radius:.64rem;
+}
+.wos-list-action-dock.collection-panel-toolbar__actions .collection-toolbar-add {
+  height:2.15rem;
+  padding:0 .7rem;
+  font-size:.72rem;
+  border-radius:.64rem;
+}
+.management-tabs-settings {
+  display:grid;
+  place-items:center;
+  flex:0 0 2.15rem;
+  width:2.15rem;
+  min-width:2.15rem;
+  height:2.15rem;
+  padding:0;
+  border-radius:.64rem;
+  box-shadow:0 1px 2px rgb(25 55 108 / .06);
+}
+.wos-list-action-dock--standalone.collection-panel-toolbar__actions {
+  width:max-content;
+  max-width:100%;
+  margin:.15rem 0 .55rem auto;
+  padding:.27rem;
+  border:1px solid #d9e4f3;
+  border-radius:.78rem;
+  background:#f8fbff;
+}
+.dark .wos-list-action-dock--standalone.collection-panel-toolbar__actions {
+  border-color:#405b7d;
+  background:#192d48;
+}
+.wos-collection-card {min-width:0;overflow:hidden;}
+.wos-collection-card > .collection-table-scroll {margin:0;}
+/* KPI cards: same compact size; preserve full currency values. */
+.widget-grid.widget-grid--single-row {
+  gap:.48rem;
+  margin-bottom:.65rem;
+}
+.widget-grid.widget-grid--single-row .widget-stat-card {
+  min-height:4.15rem;
+  padding:.5rem .6rem;
+  border-radius:.88rem;
+}
+.widget-grid.widget-grid--single-row .widget-stat-card__head {gap:.3rem;}
+.widget-grid.widget-grid--single-row .widget-stat-card__icon {width:1.65rem;height:1.65rem;border-radius:.6rem;}
+.widget-grid.widget-grid--single-row .widget-stat-card__label {
+  font-size:.69rem;
+  line-height:.95rem;
+}
+.widget-grid.widget-grid--single-row .widget-stat-card__value {
+  font-size:clamp(.84rem,1.15vw,1.15rem);
+  line-height:1.13;
+  overflow-wrap:anywhere;
+}
+.widget-grid.widget-grid--budget .widget-stat-card__label {
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  white-space:normal;
+  overflow:hidden;
+}
+@media (max-width:1290px) {
+  .management-tabs-panel {grid-template-columns:minmax(0,1fr);}
+  .management-tabs-tools {justify-content:flex-end;}
+}
+@media (max-width:767px) {
+  .management-tabs-panel {display:grid;grid-template-columns:minmax(0,1fr);gap:.48rem;}
+  .management-tabs-bar {width:100%;overflow:visible;padding:0;}
+  .management-tabs-bar .management-tab {font-size:.7rem;min-height:2.1rem;padding:.35rem .58rem;}
+  .management-tabs-tools {display:flex;flex-direction:row;align-self:stretch;justify-content:flex-end;gap:.3rem;}
+  .wos-list-action-dock.collection-panel-toolbar__actions {justify-content:flex-end;flex-wrap:wrap;max-width:100%;}
+  .widget-grid.widget-grid--single-row {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    overflow:visible;
+    padding-bottom:0;
+    scroll-snap-type:none;
+  }
+  .widget-grid.widget-grid--single-row .widget-stat-card {
+    width:100%;
+    min-width:0;
+    max-width:none;
+    scroll-snap-align:none;
+  }
+}
+@media (max-width:390px) {
+  .management-tabs-bar {gap:.28rem;}
+  .management-tabs-tools {flex-wrap:wrap;}
+  .management-tabs-settings {margin-left:auto;}
+  .wos-list-action-dock--integrated.collection-panel-toolbar__actions {flex:1 1 100%;}
+  .management-tabs-bar .management-tab {padding:.36rem .5rem;}
+  .widget-grid.widget-grid--single-row .widget-stat-card__icon {width:1.45rem;height:1.45rem;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .management-tabs-bar .management-tab,
+  .wos-list-action-dock .collection-toolbar-button {transition:none!important;}
+}
+/* Allow tab/action alignment to respond to available content width, not a hard viewport breakpoint. */
+@media (min-width:768px) {
+  .management-tabs-panel {display:flex;flex-wrap:wrap;align-items:flex-start;}
+  .management-tabs-bar {flex:1 1 38rem;width:auto;max-width:100%;}
+  .management-tabs-tools {flex:0 1 auto;margin-left:auto;}
+}
+
+@media (max-width:390px) {
+  .management-tabs-tools {flex-wrap:nowrap;}
+  .wos-list-action-dock--integrated.collection-panel-toolbar__actions {flex:0 1 auto;}
+}
